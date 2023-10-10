@@ -1,0 +1,35 @@
+
+.boxList {
+  display: flex;
+  align-items: center;
+  background: var(--amarelo-agro-connect);
+  border-radius: 45px;
+  height: 6rem;
+  width: 120rem;
+  margin-left: 6rem;
+  margin-top: 1.5rem;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2.8rem;
+  gap: 1.5rem;
+}
+
+.culturaName {
+  font-size: 1.3rem;
+}
+
+.dataCriacao {
+  font-size: 1.3rem;
+}
+
+
+
+@media (max-width: 1366px) {
+  .boxList {
+    margin-left: 1rem;
+    width: 75rem;
+  }
+}

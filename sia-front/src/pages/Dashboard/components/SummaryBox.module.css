@@ -1,0 +1,54 @@
+.box {
+    width: 24rem;
+    height: 7rem;
+    border-radius: 1.25rem;
+    background: #c5c2c2;
+}
+
+.items {
+    display: flex;
+    gap: 6rem;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+    
+}
+
+.numberInfo {
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+.textInfo {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #000;
+    text-align: center;
+    overflow: hidden;
+   text-overflow: ellipsis;
+   margin-right: 1rem;
+}
+
+@media (max-width: 1366px) {
+    .box {
+        width: 16rem;
+        height: 6rem;
+    }
+
+    .items {
+        gap: 3rem;
+    }
+
+    .numberInfo {
+        font-size: 4rem;
+    }
+
+    .textInfo {
+        font-size: 1rem;
+        margin-right: 1rem;
+        font-weight: 400;
+        color: #000;
+
+    }
+}

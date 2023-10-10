@@ -1,0 +1,48 @@
+.titleTop {
+    margin-top: 2rem;
+    margin-left: 6rem;
+}
+
+.summaryBoxContainer {
+    display: flex;
+    gap: 8rem;
+    margin-top: 3rem;
+    margin-left: 6rem;
+}
+
+.titleList {
+    margin-top: 10rem;
+    margin-left: 6rem;
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.emptyList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10rem;
+    font-size: 1.5rem;
+    color: var(--verde-forte);
+}
+
+
+
+@media (max-width: 1366px) {
+    .titleTop {
+        font-size: 2rem;
+        margin-top: 1.25rem;
+        margin-left: 2rem;
+    }
+
+    .summaryBoxContainer {
+        margin-left: 2rem;
+        gap: 3rem;
+    }
+
+    .titleList {
+        margin-top: 8rem;
+        margin-left: 2rem;
+    }
+
+}

@@ -1,0 +1,14 @@
+:root {
+    --amarelo-agro-connect: #ffc632;
+    --verde-fraco: #50a039;
+    --verde-forte: #3c7c2a;
+    --verde-piscina: #378656;
+    --cinza-fundo: #e2e2e2;
+    --musgo: #385343;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }

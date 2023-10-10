@@ -1,0 +1,95 @@
+.header {
+    background: var(--verde-piscina);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 6.1875rem;
+}
+
+.logo {
+    width: 6rem;
+    height: 3.5rem;
+    margin-left: 6rem;
+}
+.itensGroup {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+}
+
+.item a {
+    text-decoration: none;
+    font-size: 2rem;
+    color: #C5C5C5;
+}
+
+.item img {
+    width: 3rem;
+    height: 3rem;
+}
+
+.header nav {
+    display: flex;
+    gap: 1.6rem;
+    margin-right: 5rem;
+}
+
+a:hover {
+    color: #ffff;
+}
+
+.description {
+    background: #385343;
+    height: 3.625rem;
+    display: flex;
+    align-items: center;
+}
+
+.textDescription {
+    color: #FFF;
+    font-size: 1.3rem;
+    margin-left: 6rem;
+}
+
+@media (max-width: 1366px) {
+    .logo {
+        width: 4.74306rem;
+        height: 2.95rem;
+        margin-left: 2rem;
+    }
+
+    .textDescription {
+        font-size: 1.1rem;
+        margin-left: 2rem;
+    }
+
+    .item img {
+        width: 2.3715rem;
+        height: 2.5rem;
+    }
+
+    .item a {
+        font-size: 1.5rem;
+    }
+
+    .itensGroup {
+        gap: 1.6rem;
+    }
+
+    .item {
+        gap: 1.6remrem;
+    }
+
+    .header nav {
+        gap: 1.4rem;
+        margin-left: 5rem;
+        margin-right: 1rem;
+    }
+
+}
