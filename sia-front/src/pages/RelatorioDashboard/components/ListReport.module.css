@@ -1,0 +1,28 @@
+.containerReportBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.reportBlock {
+  display: flex;
+  align-items: center;
+  width: 120rem;
+  height: 4.625rem;
+  background: #E2E2E2;
+  border-radius: 50px;
+  margin-left: 5rem;
+  margin-top: 2rem;
+}
+
+.contentReport {
+  display: flex;
+  align-items: center;
+  margin-left: 3rem;
+  gap: 3rem;
+}
+
+@media (max-width: 1366px) {
+  .reportBlock {
+    width: 75rem;
+  }
+}

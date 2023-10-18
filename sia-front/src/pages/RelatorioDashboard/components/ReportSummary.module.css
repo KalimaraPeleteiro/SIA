@@ -1,0 +1,55 @@
+.boxReportSummary {
+  width: 45rem;
+  height: 18.125rem;
+  background: #E2E2E2;
+  border-radius: 40px;
+  border: 4px solid #378656
+}
+
+.headerReportSummary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  background: #385343;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+}
+
+.titleReportSummary{
+  font-size: 2rem;
+  color: #ffff;
+}
+
+.containerList {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  color: #378656;
+  max-height: calc(18.125rem - 4rem - 1.2rem);  /* A altura da boxReportSummary menos a altura do headerReportSummary e qualquer espaço adicional que você queira considerar */
+  overflow-y: auto;  /* torna o conteúdo rolável verticalmente se exceder a max-height */
+}
+
+
+.listReportSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 1366px) {
+  .boxReportSummary {
+    width: 30rem;
+    height: 18.125rem;
+    margin-bottom: 2rem !important;  /* só use isso como último recurso */
+  }
+
+  .titleReportSummary {
+    font-size: 1.5rem;
+  }
+
+  .headerReportSummary{
+    height: 3rem;
+  }
+}

@@ -3,9 +3,11 @@ import { useState } from "react"
 import styles from "./Dashboard.module.css"
 import SummaryBox from "./components/SummaryBox"
 import ListCultura from "./components/ListCultura";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [culturas, setCulturas] = useState([]);
+  const navigate = useNavigate();
 
   function handleCreateCulture() {
     const newCulture = {
@@ -14,7 +16,11 @@ const Dashboard = () => {
     };
 
     setCulturas(prevCulturas => [...prevCulturas, newCulture]);
-}
+  }
+
+  const handleShowRelatorio = () => {
+    navigate("/relatorio");
+  }
   return (
     <>
       <h1 className={styles.titleTop}>Visão geral</h1>
@@ -24,6 +30,11 @@ const Dashboard = () => {
         <SummaryBox text={"Quilos Estimados para Colheita"}/>
         <SummaryBox text={"Pestes Detectadas por m²"}/>
       </div>
+
+      <div className={styles.buttonContainer}>
+        <button className={styles.buttonAbrirRelatorio} onClick={handleShowRelatorio}>Abrir Relatório</button>
+      </div>
+      
 
       <h2 className={styles.titleList}>Lista de Culturas</h2>
       <button onClick={handleCreateCulture}>AAAAA</button>
