@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+
+
 .titleTop {
     margin-top: 2rem;
-    margin-left: 6rem;
+    margin-left: 6rem;  
+    font-weight: 400;
 }
 
 .summaryBoxContainer {
@@ -15,6 +19,7 @@
     margin-left: 6rem;
     font-size: 3rem;
     font-weight: 400;
+    font-family: var(--poppins);
 }
 
 .emptyList {
@@ -40,6 +45,7 @@
     font-size: 1.5rem;
     color: aliceblue;
     cursor: pointer;
+    font-family: var(--poppins);
 }
 
 .buttonAbrirRelatorio:hover {
@@ -58,6 +64,7 @@
         font-size: 2rem;
         margin-top: 1.25rem;
         margin-left: 2rem;
+        font-family: var(--poppins);
     }
 
     .summaryBoxContainer {

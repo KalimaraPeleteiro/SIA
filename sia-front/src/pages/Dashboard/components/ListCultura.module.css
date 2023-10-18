@@ -19,10 +19,13 @@
 
 .culturaName {
   font-size: 1.3rem;
+  font-family: var(--poppins);
 }
 
 .dataCriacao {
   font-size: 1.3rem;
+  font-family: var(--chivo);
+  font-weight: 300;
 }
 
 

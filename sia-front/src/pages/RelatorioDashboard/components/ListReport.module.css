@@ -19,6 +19,8 @@
   align-items: center;
   margin-left: 3rem;
   gap: 3rem;
+  font-family: var(--chivo);
+  font-weight: 300;
 }
 
 @media (max-width: 1366px) {

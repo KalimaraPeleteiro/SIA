@@ -1,6 +1,6 @@
 import styles from "./Relatorio.module.css"
 import { useNavigate } from "react-router-dom";
-import ListReports from "./components/listReports";
+import ListReports from "./components/ListReports";
 import okImage from "./images/ok.png"
 import atencaoImage from "./images/atencao.png"
 import cuidadoImage from "./images/cuidado.png"
