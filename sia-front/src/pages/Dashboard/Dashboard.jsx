@@ -1,22 +1,29 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from "./Dashboard.module.css"
 import SummaryBox from "./components/SummaryBox"
 import ListCultura from "./components/ListCultura";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const Dashboard = () => {
   const [culturas, setCulturas] = useState([]);
   const navigate = useNavigate();
 
-  function handleCreateCulture() {
-    const newCulture = {
-        id: Date.now().toString(),
-        name: "Nova Cultura" 
-    };
+  const fetchCulturas = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/dashboard/lista/");
+      setCulturas(response.data.culturas);
+      console.log("Dados da API:", response.data);
+    } catch (error) {
+      console.error("Erro ao buscar as culturas:", error);
+    }
+  };
 
-    setCulturas(prevCulturas => [...prevCulturas, newCulture]);
-  }
+  useEffect(() => {
+    fetchCulturas(); // Chamando a função quando o componente for montado
+  }, []);
 
   const handleShowRelatorio = () => {
     navigate("/relatorio");
@@ -37,10 +44,9 @@ const Dashboard = () => {
       
 
       <h2 className={styles.titleList}>Lista de Culturas</h2>
-      <button onClick={handleCreateCulture}>AAAAA</button>
       <div className={styles.listCulturaContainer}>
         {culturas.length ? (
-          culturas.map(cultura => <ListCultura key={cultura.id} cultura={cultura} />)
+          culturas.map(cultura => <ListCultura key={cultura.nomeCultura} cultura={cultura} />)
         ) : (
           <div className={styles.emptyList}>
             <strong>Você ainda não criou nenhuma cultura no sistema. Crie agora e aproveite os serviços da SIA!</strong>

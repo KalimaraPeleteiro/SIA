@@ -7,8 +7,8 @@ const ListCultura = ({ cultura }) => {
     <>
       <div className={styles.boxList}>
         <div className={styles.items}>
-            <p className={styles.culturaName}>{cultura.name}</p>
-            <p className={styles.dataCriacao}>Criada em: dd/mm/aaaa</p>
+            <p className={styles.culturaName}>{cultura.nomeCultura}</p>
+            <p className={styles.dataCriacao}>Criada em: {cultura.diaCriacao}</p>
         </div>
       </div>  
     </>
