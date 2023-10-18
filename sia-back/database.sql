@@ -361,3 +361,7 @@ CALL novaAnalise('Análise do Rei', 2);
 
 CALL adicionarAnaliseAoUsuario(1, 1);
 
+CALL novaCultura('Cultura Teste', 2);
+CALL ativarCultura(2);
+
+CALL adicionarCulturaAoUsuario(2, 1);
