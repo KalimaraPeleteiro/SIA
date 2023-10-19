@@ -18,16 +18,18 @@
 .numberInfo {
     font-size: 5rem;
     font-weight: bold;
+    font-family: var(--hammersmith)
 }
 
 .textInfo {
     font-size: 1.5rem;
-    font-weight: 400;
     color: #000;
     text-align: center;
     overflow: hidden;
-   text-overflow: ellipsis;
-   margin-right: 1rem;
+    text-overflow: ellipsis;
+    margin-right: 1rem;
+    font-family: var(--chivo);
+    font-weight: 300;
 }
 
 @media (max-width: 1366px) {
@@ -47,7 +49,7 @@
     .textInfo {
         font-size: 1rem;
         margin-right: 1rem;
-        font-weight: 400;
+        font-weight: 300;
         color: #000;
 
     }

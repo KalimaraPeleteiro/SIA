@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hammersmith+One:wght@400;500;600;700');
+
+
 :root {
     --amarelo-agro-connect: #ffc632;
     --verde-fraco: #50a039;
@@ -5,6 +10,9 @@
     --verde-piscina: #378656;
     --cinza-fundo: #e2e2e2;
     --musgo: #385343;
+    --poppins: "Poppins";
+    --chivo: "Chivo";
+    --hammersmith: "Hammersmith One"
 }
 
 * {

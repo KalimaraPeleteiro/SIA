@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+
+
 .header {
     background: var(--verde-piscina);
     display: flex;
@@ -26,6 +29,7 @@
 .item a {
     text-decoration: none;
     font-size: 2rem;
+    font-family: var(--poppins);
     color: #C5C5C5;
 }
 
@@ -55,6 +59,7 @@ a:hover {
     color: #FFF;
     font-size: 1.3rem;
     margin-left: 6rem;
+    font-family: var(--poppins);
 }
 
 @media (max-width: 1366px) {
