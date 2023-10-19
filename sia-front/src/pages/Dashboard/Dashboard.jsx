@@ -4,6 +4,7 @@ import styles from "./Dashboard.module.css"
 import SummaryBox from "./components/SummaryBox"
 import ListCultura from "./components/ListCultura";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header";
 
 const Dashboard = () => {
   const [culturas, setCulturas] = useState([]);
@@ -23,6 +24,7 @@ const Dashboard = () => {
   }
   return (
     <>
+      <Header textHeader={"Um painel geral a respeito de nossos serviços e suas atividades."} />
       <h1 className={styles.titleTop}>Visão geral</h1>
       <div className={styles.summaryBoxContainer}>
         <SummaryBox text={`Culturas Ativas`}/>

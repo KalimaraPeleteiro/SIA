@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import { NavLink } from "react-router-dom"
 import styles from "./Header.module.css"
 
 
-const Header = () => {
+const Header = ({textHeader}) => {
   return (
     <>
         <header className={styles.header}>
@@ -34,7 +35,7 @@ const Header = () => {
         </header>
 
         <div className={styles.description}>
-            <p className={styles.textDescription}>Um painel geral a respeito de nossos serviços e suas atividades.</p>
+            <p className={styles.textDescription}>{textHeader}</p>
         </div>
     </>
   )
