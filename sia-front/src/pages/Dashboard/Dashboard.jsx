@@ -4,12 +4,8 @@ import styles from "./Dashboard.module.css"
 import SummaryBox from "./components/SummaryBox"
 import ListCultura from "./components/ListCultura";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import Header from "../../components/Header";
-=======
 import axios from "axios";
-
->>>>>>> 7a5d05b53b60efb7b2c0a978a1dceb6feea24d54
 
 const Dashboard = () => {
   const [culturas, setCulturas] = useState([]);
