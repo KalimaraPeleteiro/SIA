@@ -1,14 +1,31 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- FUNÇÕES
-CREATE OR REPLACE FUNCTION retornarTodasCulturasUsuario(emailUsuario text) RETURNS TABLE (nomeCultura text) 
+CREATE OR REPLACE FUNCTION retornarTodasCulturasUsuarioDashboard(emailUsuario text) RETURNS TABLE (nomeCultura text, dataCriacao timestamp) 
 AS $$
 BEGIN
 	RETURN QUERY
-	SELECT Culturas.nomePersonalizado AS nomeCultura FROM Usuarios
+	SELECT Culturas.nomePersonalizado, Culturas.dataCriacao FROM Usuarios
 	INNER JOIN ListaCulturas ON Usuarios.id = ListaCulturas.usuario_id
 	INNER JOIN Culturas ON ListaCulturas.cultura_id = Culturas.id
 	WHERE Usuarios.email = emailUsuario;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION retornarListaCulturasDetalhes(emailUsuario text) RETURNS TABLE (nomeCultura text, produtoCultura text, dataCriacao timestamp, existeAnalise boolean, estagio integer) 
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT Culturas.nomePersonalizado, Lavouras.produto, Culturas.dataCriacao,
+           CASE WHEN ListaAnalisesCulturas.cultura_id IS NOT NULL THEN true ELSE false END AS existeAnalise,
+           Analises.estagio
+    FROM Usuarios
+    INNER JOIN ListaCulturas ON Usuarios.id = ListaCulturas.usuario_id
+    INNER JOIN Culturas ON ListaCulturas.cultura_id = Culturas.id
+    INNER JOIN Lavouras ON Lavouras.id = Culturas.produto
+    LEFT JOIN ListaAnalisesCulturas ON ListaAnalisesCulturas.cultura_id = Culturas.id
+    LEFT JOIN Analises ON Analises.id = ListaAnalisesCulturas.analise_id
+    WHERE Usuarios.email = emailUsuario;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -176,6 +193,17 @@ CREATE TABLE ListaAnalises(
 	PRIMARY KEY(analise_id, usuario_id)
 );
 
+CREATE TABLE ListaAnalisesCulturas(
+	analise_id integer,
+	cultura_id integer,
+	
+	FOREIGN KEY (analise_id) REFERENCES Analises(id),
+	FOREIGN KEY (cultura_id) REFERENCES Culturas(id),
+	
+	PRIMARY KEY(analise_id, cultura_id)
+);
+
+
 
 -- PROCEDURES
 CREATE OR REPLACE PROCEDURE novoUsuario(nome text, email text, senha text) AS $$
@@ -214,17 +242,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
--- Chamada associada (SELECT * FROM retornarTodasCulturasUsuario('email_aqui');
-
 CREATE OR REPLACE PROCEDURE novoTipoEstacao(tipo text) AS $$
 BEGIN
 	INSERT INTO TiposEstacao (tipo)
 	VALUES(tipo);
 END;
 $$ LANGUAGE plpgsql;
-
-
 
 CREATE OR REPLACE PROCEDURE novaEstacao(nome text, tipo integer, cultura integer) AS $$
 BEGIN
@@ -326,6 +349,18 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE PROCEDURE ligarAnaliseACultura(analise integer, cultura integer) AS $$
+DECLARE
+	analise_tipo integer;
+BEGIN
+	SELECT Analises.tipo INTO analise_tipo FROM Analises WHERE id = analise;
+	
+	IF analise_tipo = 2 THEN
+		INSERT INTO ListaAnalisesCulturas(analise_id, cultura_id) VALUES(analise, cultura);
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
 
 
 
@@ -371,3 +406,5 @@ CALL novaAnalise('Análise do Rei', 2);
 CALL novaCultura('Cultura Teste', 2);
 CALL ativarCultura(2);
 CALL adicionarCulturaAoUsuario(2, 1);
+
+CALL ligarAnaliseACultura(1, 1);

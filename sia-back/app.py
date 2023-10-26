@@ -4,11 +4,16 @@ from databases import Database
 from datetime import datetime
 import json
 
+
+# Preparando o Banco
 URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA"
 banco_de_dados = Database(URL_BANCO)
 
+
 app = FastAPI()
 
+
+# CORS
 origens = ["http://localhost:5173"]
 app.add_middleware(
     CORSMiddleware,
@@ -18,6 +23,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# =================== ROTAS DA API ===================
+
+# Rota da página de Dashboard. Retorna uma lista das culturas do usuário.
+# Por enquanto, considera o usuário como o usuário padrão: "reidoagro@agro.com.br"
 @app.get("/dashboard/lista/")
 async def lista_culturas_dashboard():
     try:
@@ -27,10 +36,37 @@ async def lista_culturas_dashboard():
 
         culturas = list()
         for cultura in resultado:
-            data = str(cultura["diacriacao"])
+            data = str(cultura["datacriacao"])
             data_formatada = datetime.fromisoformat(data)
             data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
             culturas.append({"nomeCultura": cultura["nomecultura"], "diaCriacao": data_formatada})
+        
+        return {"culturas": culturas}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+
+
+# Retornando a lista de culturas na página de Culturas.
+@app.get("/culturas/lista/")
+async def lista_culturas_dashboard():
+    try:
+        await banco_de_dados.connect()
+        busca = "SELECT * FROM retornarListaCulturasDetalhes('reidogado@agro.com.br');"
+        resultado = await banco_de_dados.fetch_all(busca)
+
+        culturas = list()
+        for cultura in resultado:
+            data = str(cultura["datacriacao"])
+            data_formatada = datetime.fromisoformat(data)
+            data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
+            culturas.append({"nomeCultura": cultura["nomecultura"], 
+                             "produtoCultura": cultura["produtocultura"], 
+                             "dataCriacao": data_formatada,
+                             "analisePrevia": cultura["existeanalise"],
+                             "estagioAnalise": cultura["estagio"]})
         
         return {"culturas": culturas}
     
