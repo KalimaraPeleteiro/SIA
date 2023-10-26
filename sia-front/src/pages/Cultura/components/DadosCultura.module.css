@@ -1,0 +1,76 @@
+.containerDados {
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    margin-left: 4rem;
+}
+
+.containerDados h2 {
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.containerDadosEstacao {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* Cria duas colunas de largura igual */
+    
+}
+
+.containerDadosEstacao > h2 {
+    grid-column: span 2;  /* Faz o h2 se estender por 2 colunas */
+}
+
+
+.infoColheita {
+    display: flex;
+    margin-top: 1.5rem;
+    gap: 2rem;
+    align-items: center;
+}
+
+
+.infoColheitaNumero {
+    display: flex;
+    justify-content: center; /* Alinha horizontalmente */
+    align-items: center;     /* Alinha verticalmente */
+    width: 16.6875rem;
+    height: 5.9375rem;
+    border-radius: 1.25rem;
+    font-size: 3.125rem;
+    font-family: Hammersmith One;
+    background: var(--Amarelo-AgroConnect, #FFC632);
+    text-align: center;
+}
+
+.infoColheitaTexto {
+    font-family: Chivo;
+    width: 60%;
+    text-align: center;       
+    color: black;             
+    font-size: 1.3rem;          
+    letter-spacing: 0.025em; 
+    justify-content: center; 
+}
+
+.containerAtividadesDiarias {
+    display: flex;
+    flex-direction: column;
+}
+
+.containerAtividasDiariasText {
+    display: flex;
+    flex-direction: column; 
+    margin-top: 2rem;
+}
+
+
+.atividadeItem {
+    display: flex; 
+    align-items: center;
+    margin-bottom: 1rem; 
+    gap: 2rem;
+}

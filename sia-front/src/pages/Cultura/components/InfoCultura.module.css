@@ -1,0 +1,61 @@
+.containerInfoCultura {
+  width: 23rem;
+  height: 8rem;
+  border-radius: 1.875rem;
+  background: #D9D9D9;
+  margin-left: 3rem;
+  margin-top: 2rem;
+}
+
+.buttonInfo {
+  margin-top: 3.7rem;
+  width: 16rem;
+  height: 3rem;
+  background: #FFC632;
+  border-radius: 3.125rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.containerButtonInfo {
+  display: flex;
+  justify-content: center;
+}
+
+.buttonInfo:hover {
+  background: #e7b433;
+}
+
+
+.pStyles {
+  height: 60px;
+  font-family: McLaren;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 2rem;
+  padding: 0 1rem ;
+}
+
+
+@media (max-width: 1366px) {
+  .containerInfoCultura {
+    width: 16.6875rem;
+    height: 8.5rem;
+  }
+
+  .containerInfoCultura {
+    width: 16rem;
+    height: 8.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .buttonInfo {
+    width: 12rem;
+    height: 3rem;
+  }
+
+  .pStyles {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    padding: 0 1rem ;
+  }
+}

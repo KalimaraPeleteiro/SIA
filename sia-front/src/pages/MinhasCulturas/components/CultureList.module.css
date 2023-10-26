@@ -7,6 +7,14 @@
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
+.linkStyle {
+  text-decoration: none;
+  color: inherit;
+}
+
+.linkStyle:hover {
+  color: rgb(83, 72, 88); 
+}
 
 .titleCultureList{
   margin-left: 2rem;

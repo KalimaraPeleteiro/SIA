@@ -66,7 +66,15 @@ const MinhasCulturas = () => {
           <div className={styles.emptyList}>
           </div>
         )}
-    </div>
+      </div>
+      
+      <CultureList 
+        nomeCultura={"Milho"}
+        produtoIndicado={"Milho"}
+        analiseState={"concluida"}
+        colheitaEsperadaState={"560kg"}
+        dataCriacao={"dd/mm/aaaa"}
+      />
 
       <button className={styles.buttonAdicionarCultura} onClick={openModal}>
         Adicionar Cultura

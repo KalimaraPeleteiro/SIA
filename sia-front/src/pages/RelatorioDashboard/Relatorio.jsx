@@ -10,14 +10,14 @@ import ReportSummary from "./components/ReportSummary";
 const Relatorio = () => {
   const navigate = useNavigate();
 
-  const handleShowRelatorio = () => {
+  const handleShowDashboard = () => {
     navigate("/dashboard");
   }
 
   return (
     <>
       <h1 className={styles.title}>Relatório Diário</h1>
-      <button onClick={handleShowRelatorio} className={styles.buttonRelatorio}> 
+      <button onClick={handleShowDashboard} className={styles.buttonRelatorio}> 
         <img src="/buttonRelatorio.png" alt="icone voltar" className={styles.imageButtonRelatorio}/>
       </button>
 
