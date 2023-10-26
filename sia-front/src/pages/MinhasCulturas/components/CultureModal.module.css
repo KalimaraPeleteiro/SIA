@@ -28,7 +28,7 @@
 .titleModal{
   color: white;
   font-size: 2.5rem;
-  font-family: Poppins;
+  font-family: var(--poppins);
 }
 
 .textChoiceContainer{
@@ -66,7 +66,7 @@
   border-radius: 1rem;
   padding: 1rem;
   background: var(--Amarelo-AgroConnect, #FFC632);  
-  font-family: Chivo;
+  font-family: var(--chivo);
   font-size: 1.5rem;
   color: var(--Musgo, #385343);
   cursor: pointer;
@@ -86,7 +86,7 @@
 .titleModalCultura {
   color: white;
   font-size: 1.3rem;
-  font-family: Poppins;
+  font-family: var(--poppins);
 }
 
 .formTitle {

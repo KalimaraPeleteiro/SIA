@@ -1,3 +1,35 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- FUNÇÕES
+CREATE OR REPLACE FUNCTION retornarTodasCulturasUsuario(emailUsuario text) RETURNS TABLE (nomeCultura text) 
+AS $$
+BEGIN
+	RETURN QUERY
+	SELECT Culturas.nomePersonalizado AS nomeCultura FROM Usuarios
+	INNER JOIN ListaCulturas ON Usuarios.id = ListaCulturas.usuario_id
+	INNER JOIN Culturas ON ListaCulturas.cultura_id = Culturas.id
+	WHERE Usuarios.email = emailUsuario;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION gerarChaveAleatoria(length integer) RETURNS varchar AS $$
+DECLARE
+    chars varchar[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,!,@,#,$,%,&}';
+    result varchar := '';
+    i integer;
+BEGIN
+    FOR i IN 1..length LOOP
+        result := result || chars[1 + random() * array_length(chars, 1)];
+    END LOOP;
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+
 -- TABELAS
 CREATE TABLE Usuarios(
 	id serial PRIMARY KEY,
@@ -21,7 +53,6 @@ CREATE TABLE Culturas(
 	nomePersonalizado text NOT NULL,
 	dataInicio timestamp,
 	produto integer NOT NULL,
-	dataCriacao timestamp DEFAULT NOW(),
 	
 	FOREIGN KEY (produto) REFERENCES Lavouras(id)
 );
@@ -48,7 +79,7 @@ CREATE TABLE Estacoes(
 	cultura_id integer,
 	chave varchar(11) UNIQUE NOT NULL DEFAULT gerarChaveAleatoria(11),
 	
-	FOREIGN KEY(tipo_id) REFERENCES Tipos_Estacao(id),
+	FOREIGN KEY(tipo_id) REFERENCES TiposEstacao(id),
 	FOREIGN KEY(cultura_id) REFERENCES Culturas(id)
 );
 
@@ -146,7 +177,6 @@ CREATE TABLE ListaAnalises(
 );
 
 
-
 -- PROCEDURES
 CREATE OR REPLACE PROCEDURE novoUsuario(nome text, email text, senha text) AS $$
 BEGIN
@@ -184,18 +214,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION retornarTodasCulturasUsuarioDashboard(emailUsuario text) 
-RETURNS TABLE (nomeCultura text, diaCriacao timestamp) 
-AS $$
-BEGIN
-	RETURN QUERY
-	SELECT Culturas.nomePersonalizado, Culturas.dataCriacao FROM Usuarios
-	INNER JOIN ListaCulturas ON Usuarios.id = ListaCulturas.usuario_id
-	INNER JOIN Culturas ON ListaCulturas.cultura_id = Culturas.id
-	WHERE Usuarios.email = emailUsuario;
-END;
-$$ LANGUAGE plpgsql;
--- Chamada associada SELECT * FROM retornarTodasCulturasUsuarioDashboard('reidogado@agro.com.br');
+
+-- Chamada associada (SELECT * FROM retornarTodasCulturasUsuario('email_aqui');
 
 CREATE OR REPLACE PROCEDURE novoTipoEstacao(tipo text) AS $$
 BEGIN
@@ -204,18 +224,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION gerarChaveAleatoria(length integer) RETURNS varchar AS $$
-DECLARE
-    chars varchar[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,!,@,#,$,%,&}';
-    result varchar := '';
-    i integer;
-BEGIN
-    FOR i IN 1..length LOOP
-        result := result || chars[1 + random() * array_length(chars, 1)];
-    END LOOP;
-    RETURN result;
-END;
-$$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE PROCEDURE novaEstacao(nome text, tipo integer, cultura integer) AS $$
 BEGIN
@@ -359,9 +368,6 @@ CALL novoTipoAnalise('Solo');
 
 CALL novaAnalise('Análise do Rei', 2);
 
-CALL adicionarAnaliseAoUsuario(1, 1);
-
 CALL novaCultura('Cultura Teste', 2);
 CALL ativarCultura(2);
-
 CALL adicionarCulturaAoUsuario(2, 1);

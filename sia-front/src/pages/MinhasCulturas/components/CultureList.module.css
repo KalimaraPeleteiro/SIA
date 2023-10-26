@@ -18,9 +18,10 @@
 
 .titleCultureList{
   margin-left: 2rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
   font-size: 1.5rem;
-  font-family: Poppins;
+  font-weight: 500;
+  font-family: var(--poppins);
 }
 
 .pContainer {
@@ -30,5 +31,13 @@
   margin-left: 2rem;
   gap: 0.5rem;
   font-size: 1.2rem;
-  font-family: Chivo;
+  font-weight: 300;
+  font-family: var(--chivo);
+}
+
+@media (max-width: 1366px) {
+  .containerCultureList{
+    margin-left: 3rem;
+    width: 80rem;
+  }
 }

@@ -8,6 +8,7 @@
   width: 120rem;
   margin-left: 6rem;
   margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .items {
@@ -33,6 +34,6 @@
 @media (max-width: 1366px) {
   .boxList {
     margin-left: 1rem;
-    width: 75rem;
+    width: 80rem;
   }
 }

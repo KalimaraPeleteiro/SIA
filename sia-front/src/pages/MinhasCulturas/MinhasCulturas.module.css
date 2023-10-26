@@ -2,6 +2,8 @@
   font-size: 2rem;
   margin-top: 2rem;
   margin-left: 6rem;
+  font-weight: 400;
+  font-family: var(--poppins);
 }
 
 
@@ -17,10 +19,21 @@
   background: var(--Amarelo-AgroConnect, #FFC632);
   cursor: pointer;
   gap: 1.8rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 400;
+  font-family: var(--poppins);
 }
 
 .buttonAdicionarCultra:hover {
   background: #f8d16e;
+}
+
+@media (max-width: 1366px) {
+    .tituloCulturas{
+      margin-left: 3rem;
+    }
+
+    .buttonAdicionarCultura{
+      margin-left: 3rem;
+    }
 }
