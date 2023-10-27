@@ -1,8 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from databases import Database
-from datetime import datetime
+from datetime import datetime, date
 import json
+import aiohttp
+import asyncio
+import random
 
 
 # Preparando o Banco
@@ -22,6 +25,32 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# =================== FUNÇÕES ASSÍNCRONAS ===================
+async def prever_safra(cultura):
+    rota = "http://127.0.0.1:5000/previsao/safra/"
+
+    # Por enquanto, vou gerar dados aleatórios.
+    body = {
+        "Cultura": cultura,
+        "Ano": date.today().year,
+        "Pesticidas (ton)": random.uniform(0.04, 110000.0),
+        "Temperatura": random.uniform(0.0, 40.0),
+        "Chuva Anual": random.uniform(50.0, 3000.0)
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(rota, data = json.dumps(body), headers = headers) as response:
+            if response.status == 200:
+                resultado = await response.json()
+                return resultado
+            elif response.status == 400:
+                return "Erro de Cultura"
+
 
 # =================== ROTAS DA API ===================
 
@@ -59,6 +88,14 @@ async def lista_culturas_dashboard():
 
         culturas = list()
         for cultura in resultado:
+
+            previsao = await prever_safra(cultura["produtocultura"])
+
+            if previsao == "Erro de Cultura":
+                resposta_previsao = "Erro de Cultura"
+            else:
+                resposta_previsao = previsao["Previsão"]
+
             data = str(cultura["datacriacao"])
             data_formatada = datetime.fromisoformat(data)
             data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
@@ -66,8 +103,9 @@ async def lista_culturas_dashboard():
                              "produtoCultura": cultura["produtocultura"], 
                              "dataCriacao": data_formatada,
                              "analisePrevia": cultura["existeanalise"],
-                             "estagioAnalise": cultura["estagio"]})
-        
+                             "estagioAnalise": cultura["estagio"],
+                             "previsaoColheita": resposta_previsao})
+                    
         return {"culturas": culturas}
     
     except Exception as e:
@@ -79,4 +117,4 @@ if __name__ == "__main__":
     import uvicorn
     
     # Adicionar o host = '0.0.0.0' após produção. Remover o reload.
-    uvicorn.run("app:app", port=8000, reload=True) 
+    uvicorn.run("app:app", port=8000, reload=True)  

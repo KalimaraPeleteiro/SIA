@@ -80,7 +80,7 @@ const MinhasCulturas = () => {
                     ? "A Análise foi encomendada e está em processo."
                     : "A Cultura não teve análise prévia."
               }
-              colheitaEsperadaState={cultura.colheitaEsperadaState}
+              colheitaEsperadaState={cultura.previsaoColheita}
               dataCriacao={cultura.dataCriacao}
             />
           )
