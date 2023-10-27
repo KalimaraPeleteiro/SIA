@@ -7,7 +7,7 @@
 }
 
 .containerDados h2 {
-    font-family: Poppins;
+    font-family: var(--poppins);
     font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
@@ -47,7 +47,8 @@
 }
 
 .infoColheitaTexto {
-    font-family: Chivo;
+    font-family: var(--chivo);
+    font-weight: 300;
     width: 60%;
     text-align: center;       
     color: black;             
@@ -73,4 +74,6 @@
     align-items: center;
     margin-bottom: 1rem; 
     gap: 2rem;
+    font-family: var(--chivo);
+    font-weight: 300;
 }

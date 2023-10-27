@@ -28,7 +28,8 @@
 
 .pStyles {
   height: 60px;
-  font-family: McLaren;
+  font-family: var(--chivo);
+  font-weight: 300;
   font-size: 1.2rem;
   text-align: center;
   margin-top: 2rem;
@@ -44,13 +45,14 @@
 
   .containerInfoCultura {
     width: 16rem;
-    height: 8.5rem;
+    height: 11rem;
     margin-right: 0.5rem;
   }
 
   .buttonInfo {
     width: 12rem;
     height: 3rem;
+    margin-top: 7rem;
   }
 
   .pStyles {

@@ -20,6 +20,8 @@
     text-align: justify;
     margin-left: 3rem;
     font-size: 1.3rem;
+    font-family: var(--chivo);
+    font-weight: 300;
 }
 
 @media (max-width: 1366px) {

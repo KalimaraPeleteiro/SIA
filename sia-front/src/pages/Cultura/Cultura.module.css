@@ -28,12 +28,16 @@
   color: #FFF;
   text-align: center;
   font-size: 2.5rem;
+  font-weight: 400;
+  font-family: var(--poppins);
 }
 
 .h2Cultura {
   margin-left: 3.6rem;
   margin-top: 3rem;
   font-size: 2rem;
+  font-family: var(--poppins);
+  font-weight: 400;
 }
 
 .containerInfosCulturas {
@@ -45,12 +49,15 @@
   margin-top: 10rem;
   margin-left: 3.6rem;
   font-size: 2rem;
+  font-family: var(--poppins);
+  font-weight: 400;
 }
 
 .headerScrapingCultura  p{
   margin-left: 3.6rem;
   margin-top: 1rem;
-  font-family: Cardo;
+  font-family: var(--poppins);
+  font-weight: 400;
   font-size: 1.3rem;
 }
 
@@ -67,7 +74,8 @@
 }
 
 .divStateCulture p {
-  font-family: Poppins;
+  font-family: var(--poppins);
+  font-weight: 400;
   font-size: 1.3rem;
   width: 37.625rem;
   height: 4.5rem;
@@ -76,7 +84,7 @@
 
 @media (max-width: 1366px) {
   .headerCultura {
-    gap: 28rem;
+    gap: 14rem;
   }
 
   .containerInfosCulturas {
