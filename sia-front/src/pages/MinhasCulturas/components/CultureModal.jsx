@@ -3,6 +3,9 @@ import React from 'react';
 import Modal from 'react-modal';
 import styles from './CultureModal.module.css';
 import InputMask from 'react-input-mask';
+import{ useState, useEffect } from 'react';
+import axios from "axios";
+
 
 const ModalScreens = {
   CHOICE: 'choice',
@@ -13,8 +16,8 @@ const ModalScreens = {
 
 const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
 
-  //const [culturas, setCulturas] = useState([]);
-  //const [loading, setLoading] = useState(true);
+  const [culturas, setCulturas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [currentScreen, setCurrentScreen] = React.useState(ModalScreens.CHOICE);
 
@@ -35,15 +38,22 @@ const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
     onExistingCulture(nomeCulturaInput, dataInicio);
   }
 
-  /* para renderizar a lista de produtos a ser cultivados */
-   // useEffect(() => {
-  //  fetch('https://api.example.com/culturas')
-  //    .then(response => response.json())
-  //    .then(data => {
- //       setCulturas(data);
-  //      setLoading(false);
-  //    });
-  //}, []);
+    const fetchCulturas = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/culturas/lavouras/");
+        setCulturas(response.data.lavouras);
+        setLoading(true);
+        console.log("Dados da API:", response.data);
+      } catch (error) {
+        console.error("Erro ao buscar as culturas:", error);
+      }
+    };
+
+    useEffect(() => {
+      setTimeout(() => {
+        fetchCulturas();
+      }, 1000);
+    }, []);
 
   return (
     <>
@@ -95,16 +105,10 @@ const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
                 </label>
                 <label>
                   <select name="produtoASerCultivado" className={styles.inputCultura}>
-                      <option value="milho">Milho</option>
-                      <option value="batata">Batata</option>
-                      <option value="cacau">Cacau</option>
-                      <option value="morango">Morango</option>
                       {
-                        /*
                       culturas.map(cultura => (
-                        <option key={cultura.key} value={cultura.id}>{cultura.name}</option>
+                        <option key={cultura.id} value={cultura.id}>{cultura.Produto}</option>
                       ))
-                      */
                       }
                   </select>
                 </label>

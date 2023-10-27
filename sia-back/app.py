@@ -80,7 +80,7 @@ async def lista_culturas_dashboard():
 
 # Retornando a lista de culturas na página de Culturas.
 @app.get("/culturas/lista/")
-async def lista_culturas_dashboard():
+async def lista_culturas_minhas_culturas():
     try:
         await banco_de_dados.connect()
         busca = "SELECT * FROM retornarListaCulturasDetalhes('reidogado@agro.com.br');"
@@ -92,7 +92,7 @@ async def lista_culturas_dashboard():
             previsao = await prever_safra(cultura["produtocultura"])
 
             if previsao == "Erro de Cultura":
-                resposta_previsao = "Erro de Cultura"
+                resposta_previsao = "Essa cultura não está disponível para previsão. Desculpe ;-;."
             else:
                 resposta_previsao = previsao["Previsão"]
 
@@ -112,6 +112,28 @@ async def lista_culturas_dashboard():
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         await banco_de_dados.disconnect()
+
+
+@app.get("/culturas/lavouras/")
+async def lista_lavouras_minhas_culturas():
+    try:
+        await banco_de_dados.connect()
+        busca = "SELECT * FROM Lavouras;"
+        resultado = await banco_de_dados.fetch_all(busca)
+
+        lavouras = list()
+
+        for lavoura in resultado:
+            lavouras.append({"id": lavoura["id"],
+                             "Produto": lavoura["produto"]})
+        
+        return {"lavouras": lavouras}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+
 
 if __name__ == "__main__":
     import uvicorn
