@@ -25,10 +25,36 @@ const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
     setCurrentScreen(isNew ? ModalScreens.NEW_CULTURE : ModalScreens.EXISTING_CULTURE);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = {
+      "nomeCultura": e.target.elements[0].value,
+      "produto": e.target.elements[1].value
+    }
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/culturas/nova-cultura/', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.status === 200) {
+        console.log('Solicitação POST bem-sucedida');
+        window.location.reload();
+      } else {
+        console.error('Erro na solicitação POST');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar a solicitação POST:', error);
+    }
+
+    /*
     const nomeCulturaInput = e.target.elements[0].value;
+    console.log(e.target.elements[0].value);
+    console.log(e.target.elements[1].value);
     onNewCulture(nomeCulturaInput);
+    */
   }
 
   const handleSubmitExistingCulture = (e) => {
@@ -155,6 +181,7 @@ const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
                   <label className={styles.labelProdutoCultivadoExistingCulture}>
                       <input type="text" placeholder="Produto cultivado" className={styles.inputCulturaExistingCultura} />
                   </label>
+
                 </div>
 
                 <label className={styles.labelDataExistingCulture}>
