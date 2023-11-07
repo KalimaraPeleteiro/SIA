@@ -1,0 +1,320 @@
+.h1AnaliseIndividual {
+    margin-left: 6rem;
+    margin-top: 3rem;
+}
+
+.rectangle1 {
+    background: var(--musgo, #385343);
+    width: 100%;
+    height: 5px;
+    position: absolute;
+    left: 0px;
+    top: 276px;
+}
+
+.rectangledown1 {
+    background: var(--musgo, #385343);
+    width: 31px;
+    height: 5px;
+    position: absolute;
+    left: 337px;
+    top: 345px;
+    transform-origin: 0 0;
+    transform: rotate(-90deg) scale(1, 1);
+  }
+
+.circulo1 {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    left: 300px;
+    top: 236px;
+    background: #ffc632;
+    text-align: center;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Hammersmith One;
+    font-size: 3.125rem;
+}
+
+.textBola1 {
+    color: #000000;
+    text-align: center;
+    font: var(--analysis-funny-title, 400 20px "McLaren", sans-serif);
+    position: absolute;
+    left: 237px;
+    top: 344px;
+    width: 216px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.imagem1 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: 165px;
+    top: 405px;
+
+}
+
+.descriptionBola1 {
+    color: #000000;
+    text-align: center;
+    font: var(--subtitleand-body, 300 16px "Chivo", sans-serif);
+    position: absolute;
+    left: 238px;
+    top: 384px;
+    width: 214px;
+    height: 140px;
+}
+
+.infoVisitaBola1 {
+    color: #000000;
+    text-align: center;
+    font: var(--analysis-funny-description, 400 16px "McLaren", sans-serif);
+    position: absolute;
+    left: 237px;
+    top: 535px;
+    width: 216px;
+    height: 59px;
+}
+
+.circulo2 {
+    background: var(--musgo, #385343);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 1003px;
+    top: 236px;
+    color: #000000;
+    text-align: center;
+    font: var(--dashboard-numbers, 400 50px "Hammersmith One", sans-serif);
+    position: absolute;
+    left: 1003px;
+    top: 236px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rectangledown2 {
+    background: var(--musgo, #385343);
+    width: 31px;
+    height: 5px;
+    position: absolute;
+    left: 1040px;
+    top: 347px;
+    transform-origin: 0 0;
+    transform: rotate(-90deg) scale(1, 1);
+}
+
+.textBola2 {
+    color: #000000;
+    text-align: center;
+    font: var(--analysis-funny-title, 400 20px "McLaren", sans-serif);
+    position: absolute;
+    left: 940px;
+    top: 354px;
+    width: 216px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.descriptionBola2 {
+    color: #000000;
+    text-align: center;
+    font: var(--subtitleand-body, 300 16px "Chivo", sans-serif);
+    position: absolute;
+    left: 941px;
+    top: 394px;
+    width: 214px;
+    height: 62px;
+}
+
+.imagem2 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: 876px;
+    top: 383px;
+}
+
+.rectangle2 {
+    background: var(--musgo, #385343);
+    width: 271px;
+    height: 5px;
+    position: absolute;
+    left: 1283px;
+    top: 552px;
+    transform-origin: 0 0;
+    transform: rotate(-90deg) scale(1, 1);
+}
+
+.circulo3 {
+    background: var(--musgo, #385343);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 1243px;
+    top: 552px;
+    color: #000000;
+    text-align: center;
+    font: var(--dashboard-numbers, 400 50px "Hammersmith One", sans-serif);
+    position: absolute;
+    left: 1243px;
+    top: 552px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rectangleleft3 {
+    background: var(--musgo, #385343);
+    width: 31px;
+    height: 5px;
+    position: absolute;
+    left: 1212px;
+    top: 592px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
+}
+
+.textBola3 {
+    color: #000000;
+    text-align: center;
+    font: var(--analysis-funny-title, 400 20px "McLaren", sans-serif);
+    position: absolute;
+    left: 978px;
+    top: 516px;
+    width: 216px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.descriptionBola3 {
+    color: #000000;
+    text-align: center;
+    font: var(--subtitleand-body, 300 16px "Chivo", sans-serif);
+    position: absolute;
+    left: 979px;
+    top: 556px;
+    width: 214px;
+    height: 103px;
+}
+
+.imagem3{
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: 919px;
+    top: 544px;
+}
+
+.rectangle3 {
+    background: var(--musgo, #385343);
+    width: 150px;
+    height: 5px;
+    position: absolute;
+    left: 1283px;
+    top: 780px;
+    transform-origin: 0 0;
+    transform: rotate(-90deg) scale(1, 1);
+}
+
+.rectangle4 {
+    background: var(--musgo, #385343);
+    width: 575px;
+    height: 5px;
+    position: absolute;
+    left: 711px;
+    top: 775px;
+    transform-origin: 0 0;
+    transform: rotate(0deg) scale(1, 1);
+}
+
+.circulo4 {
+    background: var(--musgo, #385343);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 643px;
+    top: 735px;
+    text-align: center;
+    font: var(--dashboard-numbers, 400 50px "Hammersmith One", sans-serif);
+    position: absolute;
+    left: 643px;
+    top: 735px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.textBola4{
+    color: #000000;
+    text-align: center;
+    font: var(--analysis-funny-title, 400 20px "McLaren", sans-serif);
+    position: absolute;
+    left: 391px;
+    top: 696px;
+    width: 228px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.descriptionBola4{
+    color: #000000;
+    text-align: center;
+    font: var(--subtitleand-body, 300 16px "Chivo", sans-serif);
+    position: absolute;
+    left: 392px;
+    top: 736px;
+    width: 214px;
+    height: 103px;
+}
+
+.imagem4 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: 314px;
+    top: 736px;
+}
+
+.buttonRelatorio {
+    background: var(--amarelo-agro-connect, #ffc632);
+    border-radius: 30px;
+    width: 168px;
+    height: 29px;
+    position: absolute;
+    left: 1006px;
+    top: 604px;
+}
+
+.buttonEnviarRelatorio {
+    background: var(--amarelo-agro-connect, #ffc632);
+    border-radius: 30px;
+    width: 168px;
+    height: 29px;
+    position: absolute;
+    left: 421px;
+    top: 807px;
+}

@@ -17,7 +17,8 @@ const ModalScreens = {
 const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
 
   const [culturas, setCulturas] = useState([]);
-  const [loading, setLoading] = useState(true);
+  
+  const [setLoading] = useState(true);
 
   const [currentScreen, setCurrentScreen] = React.useState(ModalScreens.CHOICE);
 
@@ -31,6 +32,8 @@ const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
       "nomeCultura": e.target.elements[0].value,
       "produto": e.target.elements[1].value
     }
+
+    onNewCulture(data)
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/culturas/nova-cultura/', data, {
@@ -64,22 +67,21 @@ const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
     onExistingCulture(nomeCulturaInput, dataInicio);
   }
 
-    const fetchCulturas = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/culturas/lavouras/");
-        setCulturas(response.data.lavouras);
-        setLoading(true);
-        console.log("Dados da API:", response.data);
-      } catch (error) {
-        console.error("Erro ao buscar as culturas:", error);
-      }
-    };
-
     useEffect(() => {
+      const fetchCulturas = async () => {
+        try {
+          const response = await axios.get("http://127.0.0.1:8000/culturas/lavouras/");
+          setCulturas(response.data.lavouras);
+          setLoading(true);
+          console.log("Dados da API:", response.data);
+        } catch (error) {
+          console.error("Erro ao buscar as culturas:", error);
+        }
+      };
       setTimeout(() => {
         fetchCulturas();
       }, 1000);
-    }, []);
+    }, [setLoading]);
 
   return (
     <>

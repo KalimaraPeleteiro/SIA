@@ -1,0 +1,37 @@
+
+
+.containerAnaliseComponent {
+    width: 81rem;
+    height: 6.8125rem;
+    border-radius: 1.875rem;
+    background: var(--Cinza-Fundo, #E2E2E2);
+    margin-top: 1rem;
+}
+
+.headerAnaliseComponent {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 1rem;
+    font-family: Poppins;
+    font-size: 1.125rem;
+}
+
+.infoAnaliseContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    font-family: Chivo;
+    font-size: 1rem;
+}
+
+.linkStyle {
+    text-decoration: none;
+    color: inherit;
+  }
+
+.linkStyle:hover {
+    color: inherit;
+}

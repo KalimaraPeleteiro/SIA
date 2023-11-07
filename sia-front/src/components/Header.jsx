@@ -28,7 +28,7 @@ const Header = ({textHeader}) => {
                     </div>
                     <div className={styles.item}>
                         <img src="/pestes.png" alt="Controle de Pestes" />
-                        <NavLink to="/controle-pestes" className={styles.link}>Controle de Pestes</NavLink>
+                        <NavLink to="/controlePestes" className={styles.link}>Controle de Pestes</NavLink>
                     </div> 
                 </div>       
             </nav>

@@ -1,0 +1,92 @@
+.analiseEncomendaContainer {
+    display: flex;
+    gap: 15rem;
+    margin-left: 6rem;
+    margin-top: 4rem;
+}
+
+.analiseEncomenda {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.headerAnaliseEncomenda {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.textAnaliseEncomenda {
+    width: 30rem;
+    height: 6rem;
+    text-align: center;
+    font-family: Chivo;
+    font-size: 1.2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.015rem;
+}
+
+.buttonAnaliseEncomenda {
+    width: 30rem;
+    height: 2.875rem;
+    border-radius: 1.875rem;
+    background: var(--Amarelo-AgroConnect, #FFC632);
+    font-family: Poppins;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.00563rem;
+    cursor: pointer;
+}
+
+.buttonAnaliseEncomenda:hover {
+    background: #f8d16e;
+}
+
+.analisesEncomendadasContainer {
+    margin-top: 4rem;
+    margin-left: 6rem;
+}
+
+.emptyList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8rem;
+    font-size: 1.5rem;
+    margin-bottom: 8rem;
+    color: var(--verde-forte);
+}
+
+@media (max-width: 1366px) {
+    .analiseEncomendaContainer {
+        display: flex;
+        gap: 3rem;
+        margin-left: 2rem;
+        margin-top: 4rem;
+    }
+
+    .textAnaliseEncomenda {
+        width: 24.5rem;
+        height: 5.375rem;
+        font-size: 1rem;
+    }
+
+    .buttonAnaliseEncomenda {
+        width: 24rem;
+        height: 2.875rem;
+    }
+
+    .analisesEncomendadasContainer {
+        margin-top: 4rem;
+        margin-left: 2rem;
+    }
+}
