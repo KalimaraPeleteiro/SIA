@@ -82,6 +82,11 @@
   margin-left: 2rem;
 }
 
+.agroAcademyFont {
+  font-family: var(--agroacademy);
+  font-weight: 500;
+}
+
 @media (max-width: 1366px) {
   .headerCultura {
     gap: 14rem;

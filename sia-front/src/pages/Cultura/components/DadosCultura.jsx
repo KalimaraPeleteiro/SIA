@@ -23,7 +23,7 @@ const DadosCultura = () => {
                 <h2>Colheita</h2>
                 <div className={styles.infoColheita}>
                     <div className={styles.infoColheitaNumero}>65 kg/ha</div>
-                    <p className={styles.infoColheitaTexto}>É o valor previsto para colheita com os dados coletados até então. Naturalmente, conforme o tempo avança e novos dados são entregues, mais perfeita será a previsão.De qualquer forma, considere planejar-se de acordo com o número fornecido. Caso queira encontrar possíveis compradores, considere a AgroAccord </p>
+                    <p className={styles.infoColheitaTexto}>É o valor previsto para colheita com os dados coletados até então. Naturalmente, conforme o tempo avança e novos dados são entregues, mais perfeita será a previsão.De qualquer forma, considere planejar-se de acordo com o número fornecido. Caso queira encontrar possíveis compradores, considere a <span className={styles.agroAccordFont}>AgroAccord</span></p>
                 </div>
             </div>
 

@@ -11,6 +11,11 @@ import axios from "axios";
 
 
 const Cultura = () => {
+  const LISTA_CULTURAS_ACEITAS_FAOSTAT = ["Tabaco", "Milho", "Sorgo", "Trigo", "Algodão", "Alfafa",
+                                          "Banana", "Laranja", "Uva", "Abacaxi", "Amendoim", "Azeitona",
+                                          "Açafrão", "Soja", "Girassol", "Feijião", "Ervilha", "Batata",
+                                          "Beterraba", "Cana-de-Açúcar", "Couve", "Cebola", "Pimenta",
+                                          "Tomate", "Melancia"];
   const navigate = useNavigate();
   const { cultureName } = useParams();
   const [cultureData, setCultureData] = useState([]);
@@ -46,7 +51,7 @@ const Cultura = () => {
     navigate('/culturas')
   }
 
-  console.log(cultureData);
+const produtoNaLista = LISTA_CULTURAS_ACEITAS_FAOSTAT.includes(cultureData.produto)
 
   return (
     <>
@@ -62,33 +67,92 @@ const Cultura = () => {
       <div className={styles.containerInfosCulturas}>
         <InfoCultura 
           nameCultura={cultureData.produto}          
-          buttonText={cultureData.ativo ? "Cultura já Iniciada.": "Iniciar Cultura"}       
-          infoType={cultureData.ativo ? "plantioIniciado" : "plantioParado"}         
-          ativo = {cultureData.ativo}
+          buttonText={cultureData.culturaIniciada ? "Cultura já Iniciada.": "Iniciar Cultura"}       
+          infoType={cultureData.culturaIniciada ? "plantioIniciado" : "plantioParado"}         
+          culturaIniciada = {cultureData.culturaIniciada}
           data = {cultureData.dataInicio}
         />
         
+        <InfoCultura 
+          buttonText={cultureData.existeAnalise ? "Ver Relatório" : "Ver Análises"}
+          infoType={cultureData.existeAnalise ? "Análise Existe": "Sem Análise"}
+          existeAnalise = {cultureData.existeAnalise}
+        />
+
+        {cultureData.existeEstacao ? (
+          <InfoCultura 
+          buttonText={cultureData.ativo ? "Estação já Ativa." : "Ativar Estação"} 
+          infoType={cultureData.ativo ? "Estação Ativa" : "Sem Ativação"}
+          ativo = {cultureData.ativo}
+        /> 
+        ): (
+          <InfoCultura 
+            buttonText={"Ver Estações"} 
+            infoType="Sem Estação"
+          />
+        )}
         
-        <InfoCultura buttonText={"Ativar Estação"} infoType="ativarEstacao"/>
-        <InfoCultura buttonText={"Ver Análises"} infoType="analise"/>
-        <InfoCultura buttonText={"Ver estações"} infoType="servicoEstacao"/>
+
+        {cultureData.existeEstacao ? (
+          <InfoCultura 
+            buttonText={cultureData.melhorEstacao ? "Aproveite!" : "Comprar Estação"} 
+            infoType={cultureData.melhorEstacao ? "Estação Pro" : "Estação Fraca"}
+          />
+        ) : (
+          <InfoCultura 
+            buttonText={"Ver Estações"}  
+            infoType="Sem Estação"
+          />
+        )
+        }
+        
+
       </div>
 
-      <header className={styles.headerScrapingCultura}> 
-        <h2 className={styles.h2CulturaInfo}>Informações: </h2>
-        <p>Para entender melhor, visite a <strong>AgroAcademy</strong></p>
-      </header>
+      {produtoNaLista ? (
+        <header className={styles.headerScrapingCultura}> 
+          <h2 className={styles.h2CulturaInfo}>Informações: </h2>
+          <p>Para entender melhor, visite a <span className={styles.agroAcademyFont}>AgroAcademy</span></p>
+        </header>
+      ):(
+        <header className={styles.headerScrapingCultura}> 
+          <h2 className={styles.h2CulturaInfo}>Que Pena!</h2>
+          <p>Essa cultura não possui texto disponível. Encontre mais informações sobre ela na <span className={styles.agroAcademyFont}>AgroAcademy</span>.</p>
+        </header>
+      )}
 
-      <ScrapCultura />
+      {produtoNaLista ? (
+        <ScrapCultura/>
 
-      <div className={styles.divStateCulture}>
-        <p>No momento, a sua cultura ainda não foi ativa. O tempo esperado para colheita é de 105 - 140 dias.</p>
-      </div>
+      ): (
+        <p></p>
+      )}
+
       
-
-      <div className={styles.containerDados}>
-        <DadosCultura />
-      </div>
+      {produtoNaLista ? (
+        <div className={styles.divStateCulture}>
+          <p>No momento, a sua cultura ainda não foi ativa. O tempo esperado para colheita é de 105 - 140 dias.</p>
+        </div>
+      ):
+      (
+        <p></p>
+      )}
+      
+      
+      {cultureData.existeEstacao ? 
+      (
+        <div className={styles.containerDados}>
+          <DadosCultura
+            melhorEstacao = {cultureData.melhorEstacao}
+          />
+        </div>
+      ):
+      <header className={styles.headerScrapingCultura}> 
+        <h2 className={styles.h2CulturaInfo}>Dados Meteorológicos</h2>
+        <p>Adquira ou ative uma estação para ter acesso!</p>
+      </header>
+      }
+      
     </>
   )
 }

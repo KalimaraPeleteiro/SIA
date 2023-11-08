@@ -77,3 +77,9 @@
     font-family: var(--chivo);
     font-weight: 300;
 }
+
+.agroAccordFont {
+    font-family: var(--agroacademy);
+    font-weight: 700;
+    font-style: italic;
+  }

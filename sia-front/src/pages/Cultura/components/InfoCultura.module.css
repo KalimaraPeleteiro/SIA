@@ -12,6 +12,7 @@
   width: 16rem;
   height: 3rem;
   background: #FFC632;
+  font-family: var(--mclaren);
   border-radius: 3.125rem;
   font-size: 1.3rem;
   cursor: pointer;
@@ -47,14 +48,14 @@
 
   .containerInfoCultura {
     width: 16rem;
-    height: 11rem;
+    height: 13rem;
     margin-right: 0.5rem;
   }
 
   .buttonInfo {
-    width: 12rem;
+    width: 14rem;
     height: 3rem;
-    margin-top: 7rem;
+    margin-top: 9rem;
   }
 
   .pStyles {
