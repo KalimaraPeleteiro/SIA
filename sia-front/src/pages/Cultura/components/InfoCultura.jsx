@@ -3,16 +3,15 @@ import { useState } from 'react';
 import styles from './InfoCultura.module.css';
 
 
-const InfoCultura = ({nameCultura, buttonText, infoType}) => {
-  const [isCulturaAtiva] = useState(false);
-
+const InfoCultura = ({nameCultura, buttonText, infoType, ativo, data}) => {
   let textInfos;
 
   switch(infoType) {
-    case 'plantio':
-      textInfos = isCulturaAtiva 
-      ? <>A cultura de <strong>{nameCultura}</strong> foi iniciada!</>
-      : <>Essa é uma cultura de <strong>{nameCultura}</strong> que ainda não foi iniciada. Assim que começar o plantio, nos avise!</>;
+    case 'plantioIniciado':
+      textInfos = <>Essa é uma cultura de <strong>{nameCultura}</strong> que foi ativa em {data}. Boa produtividade!</>;
+      break;
+    case 'plantioParado':
+      textInfos = <>Essa é uma cultura de <strong>{nameCultura}</strong> que ainda não foi iniciada. Assim que começar o plantio, nos avise!</>;
       break;
     case 'ativarEstacao':
       textInfos = <>Você não possui uma estação meteorológica ativa ligada a essa cultura</>;
@@ -33,7 +32,9 @@ const InfoCultura = ({nameCultura, buttonText, infoType}) => {
         <p className={styles.pStyles}>{textInfos}</p>
 
         <div className={styles.containerButtonInfo}>
-          <button className={styles.buttonInfo}>{buttonText}</button>
+          <button className={`${styles.buttonInfo} ${ativo ? styles.buttonAtivo : ''}`}>
+            {buttonText}
+          </button>
         </div>
       </div>  
     </>

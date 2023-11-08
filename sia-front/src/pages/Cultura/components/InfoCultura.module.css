@@ -16,13 +16,15 @@
   font-size: 1.3rem;
   cursor: pointer;
 }
+
+.buttonAtivo {
+  background: var(--verde-piscina);
+  color: white;
+}
+
 .containerButtonInfo {
   display: flex;
   justify-content: center;
-}
-
-.buttonInfo:hover {
-  background: #e7b433;
 }
 
 
