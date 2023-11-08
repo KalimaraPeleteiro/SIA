@@ -180,9 +180,15 @@ const CultureModal = ({ isOpen, onClose, onNewCulture, onExistingCulture }) => {
                       <input type="text" placeholder="Nome da cultura" className={styles.inputCulturaExistingCultura} />
                   </label>
 
-                  <label className={styles.labelProdutoCultivadoExistingCulture}>
-                      <input type="text" placeholder="Produto cultivado" className={styles.inputCulturaExistingCultura} />
-                  </label>
+                  <label className={styles.labelProdutoCultivadoExistingCulture}> 
+                    <select name="produtoASerCultivado" className={styles.inputCulturaExistingCultura}>
+                        {
+                        culturas.map(cultura => (
+                          <option key={cultura.id} value={cultura.id}>{cultura.Produto}</option>
+                        ))
+                        }
+                    </select>
+                </label>
 
                 </div>
 

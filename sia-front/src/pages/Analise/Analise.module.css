@@ -15,20 +15,23 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    font-family: Poppins;
     font-style: normal;
-    font-weight: 400;
     line-height: normal;
+}
+
+.fontHeader{
+    font-family: var(--poppins);
+    font-weight: 300;
 }
 
 .textAnaliseEncomenda {
     width: 30rem;
     height: 6rem;
     text-align: center;
-    font-family: Chivo;
+    font-family: var(--chivo);
     font-size: 1.2rem;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 300;
     line-height: normal;
     letter-spacing: -0.015rem;
 }

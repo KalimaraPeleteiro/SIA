@@ -42,6 +42,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION obterIdCultura(nomeCultura text)
+RETURNS integer AS $$
+DECLARE
+    id_cultura integer;
+BEGIN
+    SELECT id INTO id_cultura FROM Culturas WHERE nomePersonalizado = nomeCultura;
+
+    RETURN id_cultura;
+END;
+$$ LANGUAGE plpgsql;
+
 
 
 
@@ -408,3 +419,10 @@ CALL ativarCultura(2);
 CALL adicionarCulturaAoUsuario(2, 1);
 
 CALL ligarAnaliseACultura(1, 1);
+
+-- Culturas Criadas em Produção, para Teste
+CALL novaCultura('Cultura Postman', 3);
+CALL adicionarCulturaAoUsuario(3, 1);
+
+CALL novaCultura('Cultura do Site', 1);
+CALL adicionarCulturaAoUsuario(4, 1);

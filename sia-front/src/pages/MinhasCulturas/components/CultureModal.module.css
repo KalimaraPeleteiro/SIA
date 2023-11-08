@@ -274,8 +274,9 @@
   margin-top: -6rem;
 }
 
-.labelProdutoCultivadoExistingCulture input{
+.labelProdutoCultivadoExistingCulture select{
   height: 2.5rem;
+  width: 12.5rem;
   text-align: center;
   border: 3px solid var(--Verde-Piscina, #378656);
   font-size: 1rem;

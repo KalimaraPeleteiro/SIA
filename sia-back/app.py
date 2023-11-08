@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from databases import Database
 from datetime import datetime, date
 import json
 import aiohttp
-import asyncio
 import random
 
 
@@ -133,6 +133,32 @@ async def lista_lavouras_minhas_culturas():
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         await banco_de_dados.disconnect()
+
+
+@app.post("/culturas/nova-cultura/")
+async def criar_nova_cultura(dados: dict):
+    try:
+        await banco_de_dados.connect()
+
+        # Cultura Criada
+        comando = f"CALL novaCultura('{dados['nomeCultura']}', '{dados['produto']}')"
+        await banco_de_dados.execute(comando)
+
+        # Agora, vamos buscar pelo seu ID e ligá-la ao Usuário
+        busca = f"SELECT * FROM obterIdCultura('{dados['nomeCultura']}')"
+        resposta = await banco_de_dados.fetch_one(busca)
+
+        comando = f"CALL adicionarCulturaAoUsuario({resposta['obteridcultura']}, 1)"
+        await banco_de_dados.execute(comando)
+
+
+        return JSONResponse(content={"Mensagem": "Post Bem-Sucedido"}, status_code=200)
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+ 
 
 
 if __name__ == "__main__":

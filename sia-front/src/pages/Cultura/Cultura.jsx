@@ -15,6 +15,8 @@ const Cultura = () => {
     navigate('/culturas')
   }
 
+  console.log(cultureName);
+
   return (
     <>
       <header className={styles.headerCultura}>
