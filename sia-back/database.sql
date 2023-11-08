@@ -53,6 +53,24 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION obterDetalhesCultura (id_cultura integer) RETURNS TABLE (
+	produto text, dataCriacao timestamp, dataInicio timestamp,
+	existeAnalise boolean, existeEstacao boolean, ativo boolean, tipoEstacao text
+) AS $$
+BEGIN
+	RETURN QUERY
+	SELECT Lavouras.produto, Culturas.dataCriacao, Culturas.dataInicio,
+		CASE WHEN ListaAnalisesCulturas.analise_id IS NOT NULL THEN true ELSE false END AS existeAnalise,
+		CASE WHEN Estacoes.cultura_id IS NOT NULL THEN true ELSE false END AS existeEstacao,
+		Estacoes.ativo, TiposEstacao.tipo as tipoEstacao
+	FROM Culturas
+	FULL JOIN Lavouras on Culturas.produto = Lavouras.id
+	FULL JOIN ListaAnalisesCulturas on Culturas.id = ListaAnalisesCulturas.analise_id
+	FULL JOIN Estacoes on Culturas.id = Estacoes.cultura_id
+	FULL JOIN TiposEstacao on TiposEstacao.id = Estacoes.tipo_id
+	WHERE Culturas.id = id_cultura;
+END;
+$$ LANGUAGE plpgsql;
 
 
 
@@ -106,6 +124,7 @@ CREATE TABLE Estacoes(
 	tipo_id integer,
 	cultura_id integer,
 	chave varchar(11) UNIQUE NOT NULL DEFAULT gerarChaveAleatoria(11),
+	ativo BOOLEAN DEFAULT false, 
 	
 	FOREIGN KEY(tipo_id) REFERENCES TiposEstacao(id),
 	FOREIGN KEY(cultura_id) REFERENCES Culturas(id)

@@ -160,6 +160,46 @@ async def criar_nova_cultura(dados: dict):
         await banco_de_dados.disconnect()
  
 
+@app.post("/cultura_especifica/dados/")
+async def dados_cultura(dados: dict):
+    try:
+        await banco_de_dados.connect()
+
+        # Agora, vamos buscar pelo seu ID e ligá-la ao Usuário
+        busca = f"SELECT * FROM obterIdCultura('{dados['nomeCultura']}')"
+        resultado = await banco_de_dados.fetch_one(busca)
+
+        segunda_busca = f"SELECT * FROM obterDetalhesCultura({resultado['obteridcultura']})"
+        segundo_resultado = await banco_de_dados.fetch_one(segunda_busca)
+
+        data_formatada = datetime.fromisoformat(str(segundo_resultado["datacriacao"]))
+        data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
+
+        if segundo_resultado["datainicio"] is not None:
+            data_formatada_inicio = datetime.fromisoformat(str(segundo_resultado["datacriacao"]))
+            data_formatada_inicio = f"{data_formatada_inicio.day:02d}/{data_formatada_inicio.month:02d}/{data_formatada_inicio.year}"
+        else:
+            data_formatada_inicio = None
+
+        resposta = {
+            "produto": segundo_resultado["produto"],
+            "dataCriacao": data_formatada,
+            "dataInicio": data_formatada_inicio,
+            "culturaIniciada": True if data_formatada_inicio is not None else False,
+            "existeAnalise": segundo_resultado["existeanalise"],
+            "existeEstacao": segundo_resultado["existeestacao"],
+            "melhorEstacao": False if segundo_resultado["tipoestacao"] != "Pro" else True,
+            "ativo": segundo_resultado["ativo"]
+        }
+        
+        return resposta 
+
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+
 
 if __name__ == "__main__":
     import uvicorn
