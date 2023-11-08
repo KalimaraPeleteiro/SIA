@@ -1,6 +1,9 @@
 .h1AnaliseIndividual {
     margin-left: 6rem;
     margin-top: 3rem;
+    font-family: var(--poppins);
+    font-weight: 400;
+    font-size: 1.75rem;
 }
 
 .rectangle1 {
@@ -313,8 +316,21 @@
     background: var(--amarelo-agro-connect, #ffc632);
     border-radius: 30px;
     width: 168px;
+    margin-top: 1rem;
     height: 29px;
     position: absolute;
     left: 421px;
     top: 807px;
+}
+
+
+.circuloAtivo{
+    background: #ffc632;
+}
+
+@media (max-width: 1366px) {
+    .h1AnaliseIndividual {
+        margin-left: 2rem;
+        margin-top: 2rem;
+    }
 }

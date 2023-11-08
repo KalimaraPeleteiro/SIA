@@ -18,7 +18,7 @@
   cursor: pointer;
 }
 
-.buttonAtivo {
+.buttonInativo {
   background: var(--verde-piscina);
   color: white;
 }

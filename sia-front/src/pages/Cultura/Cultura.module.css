@@ -4,7 +4,7 @@
   height: 5.875rem;
   background: var(--Musgo, #385343);
   border-radius: 0 0 1.5rem 1.5rem;
-  gap: 48rem;
+  gap: 60rem;
 }
 
 .buttonRelatorio {
@@ -25,6 +25,7 @@
 }
 
 .titleCultura {
+  margin-left: 10rem;
   color: #FFF;
   text-align: center;
   font-size: 2.5rem;

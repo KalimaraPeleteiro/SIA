@@ -4,11 +4,33 @@ import analiseAguaImage from './images/analiseAgua.png'
 import historicoAnalisesImage from './images/historico.png'
 import analiseSolo from './images/analiseSolo.png'
 import AnaliseComponent from "./components/AnaliseComponent"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import axios from "axios";
 
 
 const Analise = () => {
- const [analises] = useState([]);    
+ const [analises, setAnalises] = useState([]);
+
+ const fetchAnalises = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/analises/lista/");
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar as análises: " + error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchAnalises();
+      setAnalises(data.Analises);
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(analises)
 
 
 return (
@@ -55,14 +77,15 @@ return (
         <div className={styles.analisesEncomendadasContainer}>
             <h2 className={styles.fontHeader}>Lista de Análises Pendentes</h2>
             
-            <AnaliseComponent id="1111" type="Agua" dataCricao="dd/mm/yyyy"/>
             <div>
                 {analises.length ? (
-                    analises.map(analise => <AnaliseComponent key={analise.id} type={analise.type} dataCricao={analise.dataCricao}/>)
-                ) :
+                    analises.map(analise => <AnaliseComponent key={analise.id} id = {analise.id} nome = {analise.nomePersonalizado} type={analise.tipo} dataCricao={analise.dataEncomenda}/>)
+                ) : 
+                (
                     <div className={styles.emptyList}>
-                        <strong>Você ainda não encomendou nenhuma análise.</strong>
+                        <p>Você ainda não encomendou nenhuma análise.</p>
                     </div>
+                )
                 }
             </div>
         </div>

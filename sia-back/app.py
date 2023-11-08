@@ -201,6 +201,63 @@ async def dados_cultura(dados: dict):
         await banco_de_dados.disconnect()
 
 
+@app.get("/analises/lista/")
+async def lista_analises():
+    try:
+        await banco_de_dados.connect()
+        busca = """SELECT Analises.id, Analises.nomePersonalizado, TiposAnalise.tipo, 
+                   Analises.dataEncomenda FROM Analises LEFT JOIN TiposAnalise ON TiposAnalise.id = 
+                   Analises.tipo;"""
+        
+        resultado = await banco_de_dados.fetch_all(busca)
+
+        analises = list()
+
+        
+        for analise in resultado:
+            data_formatada = datetime.fromisoformat(str(analise["dataencomenda"]))
+            data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
+
+            analises.append({"id": analise["id"],
+                             "nomePersonalizado": analise["nomepersonalizado"],
+                             "tipo": analise["tipo"],
+                             "dataEncomenda": data_formatada},
+                             )
+        
+        return {"Analises": analises}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+
+
+@app.post("/analise/detalhes/")
+async def detalhes_analise_especifica(dados: dict):
+    try:
+        await banco_de_dados.connect()
+
+        busca = f'SELECT Analises.nomePersonalizado, Analises.dataVisita, Analises.estagio FROM Analises WHERE id = {dados["analiseId"]};'
+        resultado = await banco_de_dados.fetch_one(busca)
+
+        data_formatada = datetime.fromisoformat(str(resultado["datavisita"]))
+        data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
+
+        resposta = {
+            "nomePersonalizado": resultado["nomepersonalizado"],
+            "estagio": resultado["estagio"],
+            "dataVisita": data_formatada
+        }
+        
+        return resposta 
+
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+
+
 if __name__ == "__main__":
     import uvicorn
     

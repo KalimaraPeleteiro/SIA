@@ -445,3 +445,5 @@ CALL adicionarCulturaAoUsuario(3, 1);
 
 CALL novaCultura('Cultura do Site', 1);
 CALL adicionarCulturaAoUsuario(4, 1);
+
+CALL mudarEstagioAnalise(1, 3);

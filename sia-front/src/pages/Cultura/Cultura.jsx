@@ -59,7 +59,7 @@ const produtoNaLista = LISTA_CULTURAS_ACEITAS_FAOSTAT.includes(cultureData.produ
         <button onClick={handleShowMinhasCulturas} className={styles.buttonRelatorio}> 
           <img src="/buttonRelatorio.png" alt="icone voltar" className={styles.imageButtonRelatorio}/>
         </button>
-        <h1 className={styles.titleCultura}>Minha cultura: {cultureName}</h1>
+        <h1 className={styles.titleCultura}>{cultureName}</h1>
       </header>
 
       <h2 className={styles.h2Cultura}>Visão Geral</h2>

@@ -47,7 +47,7 @@ const InfoCultura = ({nameCultura, buttonText, infoType, culturaIniciada, data, 
         <p className={styles.pStyles}>{textInfos}</p>
 
         <div className={styles.containerButtonInfo}>
-          <button className={`${styles.buttonInfo} ${culturaIniciada || ativo || existeAnalise ? styles.buttonAtivo : ''}`}>
+          <button className={`${styles.buttonInfo} ${culturaIniciada || ativo || existeAnalise ? styles.buttonInativo : ''}`}>
             {buttonText}
           </button>
         </div>
