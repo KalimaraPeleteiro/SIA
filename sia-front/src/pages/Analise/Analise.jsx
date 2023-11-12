@@ -24,7 +24,7 @@ const Analise = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchAnalises();
-      setAnalises(data.Analises);
+      setAnalises(data.Analises || []);
     };
 
     fetchData();

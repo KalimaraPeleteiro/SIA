@@ -1,0 +1,74 @@
+.h1Main {
+    margin-left: 6rem;
+    margin-top: 3rem;
+}
+
+
+.containerForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80rem;
+    height: 23.9375rem;
+    border-radius: 2.5rem;
+    background: var(--Cinza-Fundo, #E2E2E2);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin: 3rem auto 0 auto;
+}
+
+.headerForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #385343;
+    width: 80rem;
+    border-top-left-radius: 2.5rem;
+    border-top-right-radius: 2.5rem;
+    height: 5rem;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 1.5rem;
+}
+
+
+.textDescriptionForm {
+    margin-top: 1rem;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.00563rem;
+}
+
+.formStyle {
+    display: flex;
+    margin-top: 2rem;
+    gap: 3rem;
+}
+
+.inputStyle {
+    width: 33.9375rem;
+    height: 4.6875rem;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 1.125rem;
+}
+
+.labelStyle {
+    border: 5px solid var(--Verde-Piscina, #378656);
+}
+
+.buttonStyle {
+    margin-top: 2rem;
+    width: 15.5rem;
+    height: 3.375rem;
+    background: #FFC632;
+    border-radius: 1.2rem;
+    font-size: 1.3rem;
+}
+
+.buttonStyle:hover {
+    background: #FFD966;
+}

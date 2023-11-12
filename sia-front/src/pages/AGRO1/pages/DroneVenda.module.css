@@ -1,0 +1,64 @@
+.h1main {
+    margin-left: 6rem;
+    margin-top: 4rem;
+}
+
+.containerProdutos {
+    display: flex;
+    margin-top: 6rem;
+    margin-left: 6rem;
+    text-align: center;
+}
+.itemContainer {
+    display: flex;
+    gap: 16rem;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+}
+
+.headerItem {
+    font-family: McLaren;
+    font-size: 1.25rem;
+}
+
+.itemText {
+    width: 36.5rem;
+    height: 4.625rem;
+    font-size: 1.3rem;
+}
+
+.buttonItem {
+    width: 15.5rem;
+    height: 3.375rem;
+    background: #FFC632;
+    border-radius: 1.2rem;
+    font-family: Poppins;
+    
+    font-size: 1.125rem;
+}
+
+.buttonItem:hover {
+    background: #f8d16e;
+}
+
+
+
+@media (max-width: 1366px) {
+    .h1main {
+        margin-left: 2rem;
+    }
+
+    .containerProdutos {
+        margin-left: 2rem;
+    }
+
+    .itemContainer {
+        gap: 6rem;
+    }
+}

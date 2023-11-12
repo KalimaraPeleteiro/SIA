@@ -1,0 +1,97 @@
+.containerEstacaoInformativo {
+    display: flex;
+    margin-left: 6rem;
+    margin-top: 3rem;
+    gap: 5rem;
+}
+
+.headerInfo {
+    font-family: Poppins;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.containerText {
+    font-family: Chivo;
+    font: var(--subtitleand-body, 300  "Chivo", sans-serif);
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.015rem;
+}
+
+
+.EstacaoInformativo1 {
+    margin-top: 3rem;
+    color: #000000;
+    text-align: justify;
+    position: relative;
+    width: 700px;
+    font-size: 1.5rem;
+    
+}
+
+
+.EstacaoInformativoLista {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-left: 1.5rem;
+}
+
+
+.EstacaoInformativoLista li{
+    margin-bottom: 2rem;
+}
+
+.buttonEstacaoInfo {
+    margin-top: 2rem;
+    width: 50rem;
+    height: 3rem;
+    font-family: Poppins;
+    font-size: 1.125rem;
+    background: #FFC632;
+    border-radius: 1.8rem;
+    cursor: pointer;
+ }
+
+ .buttonEstacaoInfo:hover {
+    background: #f8d16e;
+ }
+
+ .estacaoImagem {
+    width: 50rem;
+    height: 40rem;
+ }
+ 
+
+@media (max-width: 1366px) {
+    .containerEstacaoInformativo {
+        margin-left: 2rem;
+
+    }
+
+    .containerText {
+        font-size: 1.2rem;
+    }
+
+    .EstacaoInformativo1 {
+        font-size: 1.3rem;
+    }
+
+    .buttonEstacaoInfo{
+        width: 36.8125rem;
+        height: 2.8125rem;
+
+    }
+
+    .estacaoImagem {
+        width: 37.875rem;
+        height: 23.9375rem;
+        position: absolute;
+        left: 780px;
+        top: 339px;
+    }
+}

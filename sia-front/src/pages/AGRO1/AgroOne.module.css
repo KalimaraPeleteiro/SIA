@@ -1,0 +1,97 @@
+.estacaoContainer {
+    display: flex;
+    gap: 15rem;
+    margin-left: 6rem;
+    margin-top: 4rem;
+}
+
+.estacaoBox {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.headerEstacaoBox {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    font-style: normal;
+    line-height: normal;
+}
+
+.fontHeader{
+    font-family: var(--poppins);
+    font-weight: 300;
+}
+
+.textEstacaoBox {
+    width: 30rem;
+    height: 6rem;
+    text-align: center;
+    font-family: var(--chivo);
+    font-size: 1.2rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    letter-spacing: -0.015rem;
+}
+
+.buttonEstacaoBox {
+    width: 30rem;
+    height: 2.875rem;
+    border-radius: 1.875rem;
+    background: var(--Amarelo-AgroConnect, #FFC632);
+    font-family: Poppins;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.00563rem;
+    cursor: pointer;
+}
+
+.buttonEstacaoBox:hover {
+    background: #f8d16e;
+}
+
+.estacoesEncomendadasContainer {
+    margin-top: 4rem;
+    margin-left: 6rem;
+}
+
+.emptyList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8rem;
+    font-size: 1.5rem;
+    margin-bottom: 8rem;
+    font-family: var(--chivo);
+    font-weight: 400;
+    color: var(--verde-forte);
+}
+
+@media (max-width: 1366px) {
+    .estacaoContainer {
+        display: flex;
+        gap: 3rem;
+        margin-left: 2rem;
+        margin-top: 4rem;
+    }
+
+    .textEstacaoBox {
+        width: 24.5rem;
+        height: 5.375rem;
+        font-size: 1rem;
+    }
+
+    .buttonEstacaoBox {
+        width: 24rem;
+        height: 2.875rem;
+    }
+
+    .estacoesEncomendadasContainer {
+        margin-top: 4rem;
+        margin-left: 2rem;
+    }
+}

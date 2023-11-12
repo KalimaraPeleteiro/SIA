@@ -1,0 +1,33 @@
+.containerEstacaoComponent {
+    width: 81rem;
+    height: 5rem;
+    border-radius: 1.875rem;
+    background: var(--Cinza-Fundo, #E2E2E2);
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.headerEstacaoComponent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+    font-size: 1.125rem;
+}   
+
+.titleEstacaoComponent{
+    font-family: var(--poppins);
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.infoEstacaoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    font-family: var(--chivo);
+    font-weight: 300;
+    font-size: 1rem;
+}
