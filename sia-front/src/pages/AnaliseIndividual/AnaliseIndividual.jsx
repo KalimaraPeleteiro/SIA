@@ -108,7 +108,7 @@ const AnaliseIndividual = () => {
 
         <span className={`${styles.circulo3} ${analiseData.estagio > 2 ? styles.circuloAtivo: ''}`}>3</span>
         <div className={styles.rectangleleft3}></div>
-        <p className={styles.textBola3}>Análise Laborial</p>
+        <p className={styles.textBola3}>Análise Laboratorial</p>
         <img src={analiseLaboral} className={styles.imagem3}/>
 
         {analiseData.estagio < 3 ? (

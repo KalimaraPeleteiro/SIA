@@ -258,6 +258,32 @@ async def detalhes_analise_especifica(dados: dict):
         await banco_de_dados.disconnect()
 
 
+# Buscando por Estações
+@app.get("/estacoes/lista/")
+async def lista_estacoes():
+    try:
+        await banco_de_dados.connect()
+        busca = """SELECT * FROM retornarTodasAsEstacoes();"""
+        
+        resultado = await banco_de_dados.fetch_all(busca)
+
+        estacoes = list()
+        
+        for estacao in resultado:
+            estacoes.append({"nomePersonalizado": estacao["nomepersonalizado"],
+                             "ativo": estacao["ativo"],
+                             "cultura": estacao["cultura"]},
+                             )
+        
+        return {"Estacoes": estacoes}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+
+
+
 if __name__ == "__main__":
     import uvicorn
     

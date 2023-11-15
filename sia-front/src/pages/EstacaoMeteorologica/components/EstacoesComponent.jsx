@@ -3,7 +3,7 @@
 import styles from './EstacoesComponent.module.css';
 
 
-const EstacoesComponent = ({nome, cultureName}) => {
+const EstacoesComponent = ({nome, cultureName, ativo}) => {
    
     return (
         <div className={styles.containerEstacaoComponent}>
@@ -13,6 +13,11 @@ const EstacoesComponent = ({nome, cultureName}) => {
 
             <div className={styles.infoEstacaoContainer}>
                 <p>Cultura {cultureName}</p>
+                {ativo ? (
+                    <p>Estação Ativa</p>
+                ) : (
+                    <p>Estação Ainda não Ativada</p>
+                )}
             </div>
         </div>
     )
