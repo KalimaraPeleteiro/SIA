@@ -1,6 +1,8 @@
 .h1main {
     margin-left: 6rem;
     margin-top: 4rem;
+    font-family: var(--poppins);
+    font-weight: 400;
 }
 
 .containerProdutos {
@@ -23,14 +25,16 @@
 }
 
 .headerItem {
-    font-family: McLaren;
+    font-family: var(--mclaren);
     font-size: 1.25rem;
 }
 
 .itemText {
     width: 36.5rem;
     height: 4.625rem;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    font-family: var(--chivo);
+    font-weight: 300;
 }
 
 .buttonItem {
@@ -38,7 +42,9 @@
     height: 3.375rem;
     background: #FFC632;
     border-radius: 1.2rem;
-    font-family: Poppins;
+    font-family: var(--poppins);
+    margin-bottom: 2rem;
+    font-weight: 400;
     
     font-size: 1.125rem;
 }
@@ -52,6 +58,8 @@
 @media (max-width: 1366px) {
     .h1main {
         margin-left: 2rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
     .containerProdutos {

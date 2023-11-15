@@ -18,8 +18,8 @@ const EstacaoInformativo = () => {
 
             <div className={styles.containerText}>
                 <div className={styles.headerInfo}>
-                    <h1>Estações Meteorológicas</h1>
-                    <h2>Porque são importantes?</h2>
+                    <h1 className = {styles.headerInfo}>Estações Meteorológicas</h1>
+                    <h2 className = {styles.headerInfo}>Porque são importantes?</h2>
                 </div>
 
                 <p className={styles.EstacaoInformativo1}>
@@ -35,7 +35,7 @@ const EstacaoInformativo = () => {
                     <li>Previsão de Colheita - Temperatura e Volume de Chuva</li>
                 </ul>
                     
-                <p>Aprenda mais na <span style={{ fontFamily: 'Cardo'}}>AgroAcademy</span>!</p>
+                <p className={styles.EstacaoInformativo}>Aprenda mais na <span style={{ fontFamily: 'Cardo'}}>AgroAcademy</span>!</p>
 
                 <button className={styles.buttonEstacaoInfo} onClick={handleChangePage}>Entendi o porquê estações são importantes. Quero uma!</button>
             </div>

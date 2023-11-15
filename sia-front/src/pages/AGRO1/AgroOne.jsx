@@ -76,7 +76,7 @@ const AgroOne = () => {
                 ) : 
                 (
                     <div className={styles.emptyList}>
-                        <p>Você ainda não sincronizou nenhuma drones.</p>
+                        <p>Você ainda não sincronizou nenhum drone.</p>
                     </div>
                 )
                 }
