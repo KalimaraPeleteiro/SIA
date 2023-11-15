@@ -67,7 +67,7 @@ const EstacaoMeteorologica = () => {
             <div className={styles.estacaoBox}>
                 <header className={styles.headerEstacaoBox}>
                     <img src={sicronizarEstacao}/>
-                    <h1 className={styles.fontHeader}>Sicronizar sua Estaçao</h1>
+                    <h1 className={styles.fontHeader}>Sicronizar sua Estação</h1>
                 </header>
 
                 <p className={styles.textEstacaoBox}>
@@ -83,7 +83,7 @@ const EstacaoMeteorologica = () => {
                     <h1 className={styles.fontHeader}>Saiba Mais!</h1>
                 </header>
 
-                <p className={styles.textEstacaoBox}>Não entende o porquê ter uma estação meteorológica! Deixe que nós te explicamos!</p>
+                <p className={styles.textEstacaoBox}>Não entende o porquê ter uma estação meteorológica? Deixe que nós te explicamos!</p>
 
                 <button className={styles.buttonEstacaoBox} onClick={handleChangePageSaibaMais} >Conhecer</button>
             </div>
