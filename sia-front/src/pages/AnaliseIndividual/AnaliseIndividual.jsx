@@ -285,7 +285,7 @@ const AnaliseIndividual = () => {
         {analiseData.estagio === 4 && analiseData.tipo === "Solo" ? (
           <div>
             <p className={styles.descriptionBola4}>É hora de descobrir os resultados! Envie o relatório e receba os resultados.</p>
-            <button className={styles.buttonEnviarRelatorio} onClick={enviarRelatorioAgua}>Receber Resultados</button>
+            <button className={styles.buttonEnviarRelatorio} onClick={enviarRelatorioSolo}>Receber Resultados</button>
           </div>
         ) : (
           <p></p>
