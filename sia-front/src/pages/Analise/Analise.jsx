@@ -90,7 +90,8 @@ return (
             
             <div>
                 {analises.length ? (
-                    analises.map(analise => <AnaliseComponent key={analise.id} id = {analise.id} nome = {analise.nomePersonalizado} type={analise.tipo} dataCricao={analise.dataEncomenda}/>)
+                    analises.map(analise => !analise.existeParametro && 
+                                            <AnaliseComponent key={analise.id} id = {analise.id} nome = {analise.nomePersonalizado} type={analise.tipo} dataCricao={analise.dataEncomenda}/>)
                 ) : 
                 (
                     <div className={styles.emptyList}>

@@ -7,11 +7,16 @@ import analiseLaboral from './images/analiseLaboral.png';
 import inteligencia from './images/inteligencia.png';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 
 const AnaliseIndividual = () => {
     
     const {analiseId} = useParams();
+    const navigate = useNavigate();
+    const [success, setSuccess] = useState(false);
     const [analiseData, setAnaliseData] = useState([]);
 
     useEffect(() => {
@@ -41,6 +46,12 @@ const AnaliseIndividual = () => {
       fetchData();
     }, [analiseId]);
 
+    useEffect(() => {
+      if (success) {
+        setTimeout(voltarPaginaAnalises, 5000);
+      }
+     }, [success]);
+
     const downloadPDFSolo = async () => {
 
       const data = {
@@ -48,7 +59,7 @@ const AnaliseIndividual = () => {
       }
 
       try {
-          const response = await axios.post('http://127.0.0.1:8000/analise/relatorio/baixar/', data, {
+          const response = await axios.post('http://127.0.0.1:8000/analise/relatorio/baixar/solo/', data, {
               headers: {
                   'Content-Type': 'application/json',
               },
@@ -69,33 +80,88 @@ const AnaliseIndividual = () => {
       }
    };
 
-   const downloadPDFAgua = async () => {
+    const downloadPDFAgua = async () => {
+
+      const data = {
+        "nomeAnalise": analiseData.nomePersonalizado
+      }
+
+      try {
+          const response = await axios.post('http://127.0.0.1:8000/analise/relatorio/baixar/agua/', data, {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              "responseType": "blob"
+          });
+          if (response.status === 200) {
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', 'Relatório.pdf');
+              document.body.appendChild(link);
+              link.click();
+          } else {
+              console.error('Erro na solicitação POST');
+          }
+      } catch (error) {
+          console.error('Erro ao enviar a solicitação POST:', error);
+      }
+    };
+
+    const enviarRelatorioSolo = async () => {
+
+      const data = {
+        "nomeAnalise": analiseData.nomePersonalizado,
+        "analiseId": analiseId
+      }
+
+      try {
+          const response = await axios.post('http://127.0.0.1:8000/analise/resultado/solo/', data, {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+          if (response.status === 200){
+            toast.success('Relatório enviado ao seu e-mail. Retornando a página de Análises...'), {
+              position: toast.POSITION.TOP_LEFT,
+              autoClose: 5000
+            }
+            setSuccess(true)
+          }
+      } catch (error) {
+          console.error('Erro ao enviar a solicitação POST:', error);
+      }
+   };
+
+   const enviarRelatorioAgua = async () => {
 
     const data = {
-      "nomeAnalise": analiseData.nomePersonalizado
+      "nomeAnalise": analiseData.nomePersonalizado,
+      "analiseId": analiseId
     }
 
     try {
-        const response = await axios.post('http://127.0.0.1:8000/analise/relatorio/baixar/', data, {
+        const response = await axios.post('http://127.0.0.1:8000/analise/resultado/agua/', data, {
             headers: {
                 'Content-Type': 'application/json',
             },
-            "responseType": "blob"
         });
-        if (response.status === 200) {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Relatório.pdf');
-            document.body.appendChild(link);
-            link.click();
-        } else {
-            console.error('Erro na solicitação POST');
+        if (response.status === 200){
+          toast.success('Relatório enviado ao seu e-mail. Retornando a página de Análises...'), {
+            position: toast.POSITION.TOP_LEFT,
+            autoClose: 5000
+          }
+          setSuccess(true)
         }
     } catch (error) {
         console.error('Erro ao enviar a solicitação POST:', error);
     }
  };
+
+   const voltarPaginaAnalises = () => {
+    navigate('/analises')
+  }
+
 
 
     console.log(analiseData)
@@ -103,6 +169,8 @@ const AnaliseIndividual = () => {
 
     return (
       <>
+        <ToastContainer/>
+
         <Header textHeader={"Encomende avaliações especializada a respeito de seu terreno para o suporte agrícola."} />
         <h1 className={styles.h1AnaliseIndividual}>{analiseData.nomePersonalizado}</h1>
         
@@ -214,15 +282,26 @@ const AnaliseIndividual = () => {
         )
         }
 
-        {analiseData.estagio === 4 ? (
+        {analiseData.estagio === 4 && analiseData.tipo === "Solo" ? (
           <div>
             <p className={styles.descriptionBola4}>É hora de descobrir os resultados! Envie o relatório e receba os resultados.</p>
-            <button className={styles.buttonEnviarRelatorio}>Enviar Relatório</button>
+            <button className={styles.buttonEnviarRelatorio} onClick={enviarRelatorioAgua}>Receber Resultados</button>
           </div>
         ) : (
           <p></p>
         )
-        }      
+        }
+
+        {analiseData.estagio === 4 && analiseData.tipo === "Água" ? (
+          <div>
+            <p className={styles.descriptionBola4}>É hora de descobrir os resultados! Envie o relatório e receba os resultados.</p>
+            <button className={styles.buttonEnviarRelatorio} onClick={enviarRelatorioAgua}>Receber Resultados</button>
+          </div>
+        ) : (
+          <p></p>
+        )
+        }
+
       </>
     )
   }
