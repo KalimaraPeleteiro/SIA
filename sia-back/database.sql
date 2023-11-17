@@ -72,6 +72,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION retornarTodasAsEstacoes() RETURNS TABLE(nomePersonalizado text, ativo boolean, cultura text)
+AS $$
+BEGIN
+	RETURN QUERY
+	SELECT Estacoes.nomePersonalizado, Estacoes.ativo, Culturas.nomePersonalizado AS Cultura FROM Estacoes
+	LEFT JOIN Culturas on Estacoes.cultura_id = Culturas.id;
+END;
+$$ LANGUAGE plpgsql;
+
 
 
 
@@ -446,4 +455,4 @@ CALL adicionarCulturaAoUsuario(3, 1);
 CALL novaCultura('Cultura do Site', 1);
 CALL adicionarCulturaAoUsuario(4, 1);
 
-CALL mudarEstagioAnalise(1, 3);
+CALL mudarEstagioAnalise(1, 4);

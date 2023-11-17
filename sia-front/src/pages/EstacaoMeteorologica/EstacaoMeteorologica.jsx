@@ -4,13 +4,36 @@ import vendaEstacao from "./images/vendaEstacao.png";
 import sicronizarEstacao from "./images/sicronizarEstacao.png";
 import saibaMais from "./images/saibaMais.png";
 import EstacoesComponent from "./components/EstacoesComponent";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 
 const EstacaoMeteorologica = () => {
   const navigate = useNavigate();
-  const [estacoes] = useState([]);
+  const [estacoes, setEstacoes] = useState([]);
+
+  const fetchEstacoes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/estacoes/lista/");
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar as estações: " + error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchEstacoes();
+      setEstacoes(data.Estacoes || []);
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(estacoes);
 
   const handleChangePageSaibaMais = () => {
     window.open(`/clima/saibaMais`, '_blank');
@@ -44,7 +67,7 @@ const EstacaoMeteorologica = () => {
             <div className={styles.estacaoBox}>
                 <header className={styles.headerEstacaoBox}>
                     <img src={sicronizarEstacao}/>
-                    <h1 className={styles.fontHeader}>Sicronizar sua Estaçao</h1>
+                    <h1 className={styles.fontHeader}>Sicronizar sua Estação</h1>
                 </header>
 
                 <p className={styles.textEstacaoBox}>
@@ -60,7 +83,7 @@ const EstacaoMeteorologica = () => {
                     <h1 className={styles.fontHeader}>Saiba Mais!</h1>
                 </header>
 
-                <p className={styles.textEstacaoBox}>Não entende o porquê ter uma estação meteorológica! Deixe que nós te explicamos!</p>
+                <p className={styles.textEstacaoBox}>Não entende o porquê ter uma estação meteorológica? Deixe que nós te explicamos!</p>
 
                 <button className={styles.buttonEstacaoBox} onClick={handleChangePageSaibaMais} >Conhecer</button>
             </div>
@@ -71,7 +94,7 @@ const EstacaoMeteorologica = () => {
             
             <div>
                 {estacoes.length ? (
-                    estacoes.map(estacao => <EstacoesComponent key={estacao.id}  nome = "Nome Personalziado" cultureName="XX" />)
+                    estacoes.map(estacao => <EstacoesComponent key={estacao.nomePersonalizado}  nome = {estacao.nomePersonalizado} cultureName={estacao.cultura} ativo = {estacao.ativo}/>)
                 ) : 
                 (
                     <div className={styles.emptyList}>

@@ -1,15 +1,19 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from databases import Database
 from datetime import datetime, date
+from fpdf import FPDF
 import json
 import aiohttp
 import random
+import smtplib
 
 
 # Preparando o Banco
 URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA"
+SERVIDOR_EMAIL = smtplib.SMTP('smtp.gmail.com', 587)
+
 banco_de_dados = Database(URL_BANCO)
 
 
@@ -26,7 +30,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# =================== FUNÇÕES ASSÍNCRONAS ===================
+
+# =================== FUNÇÕES ===================
 async def prever_safra(cultura):
     rota = "http://127.0.0.1:5000/previsao/safra/"
 
@@ -52,10 +57,92 @@ async def prever_safra(cultura):
                 return "Erro de Cultura"
 
 
+async def recomendar_analise_solo_cultura():
+    rota = "http://127.0.0.1:5000/analise/solo/cultura/"
+
+    # Por enquanto, vou gerar dados aleatórios.
+    body = {
+        "Nitrogênio": random.uniform(0.0, 140.0),
+        "Fósforo": random.uniform(5.0, 145.0),
+        "Potássio": random.uniform(5.0, 205.0),
+        "Temperatura": random.uniform(8.0, 43.7),
+        "Umidade": random.uniform(14.3, 100.0),
+        "pH": random.uniform(3.5, 9.94),
+        "Chuva": random.uniform(20.0, 300.0)
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(rota, data = json.dumps(body), headers = headers) as response:
+            if response.status == 200:
+                resultado = await response.json()
+                return resultado
+            elif response.status == 400:
+                return "Erro de Colunas"
+            
+
+async def recomendar_analise_solo_fertilizante():
+    rota = "http://127.0.0.1:5000/analise/solo/fertilizante/"
+
+    # Por enquanto, vou gerar dados aleatórios.
+    body = {
+        "Temperatura": random.uniform(25.0, 38.0),
+        "Umidade do Ar": random.uniform(50.0, 72.0),
+        "Umidade do Solo": random.uniform(25.0, 65.0),
+        "Nitrogênio": random.uniform(4.0, 42.0),
+        "Potássio": random.uniform(0.0, 19.0),
+        "Fósforo": random.uniform(0.0, 42.0)
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(rota, data = json.dumps(body), headers = headers) as response:
+            if response.status == 200:
+                resultado = await response.json()
+                return resultado
+            elif response.status == 400:
+                return "Erro de Colunas"
+
+
+def gerar_relatorio_pdf_solo(nomeAnalise):
+
+    nitrogenio = random.uniform(0.0, 140.0)
+    fosforo = random.uniform(0.0, 145.0)
+    potassio = random.uniform(0.0, 205.0)
+
+    pdf = FPDF()
+
+    pdf.add_page()
+    pdf.set_font("Arial", size = 20)
+
+    pdf.image("AgroLogo.png",  x=150, y=275, w=36, h = 11)
+    pdf.write(20, f"Relatório de Solo da Análise '{nomeAnalise}'")
+    pdf.ln()
+    pdf.set_font_size(12)
+
+    pdf.write(5, f"Nitrogênio -> {nitrogenio:.2f} gramas por m³")
+    pdf.ln()
+    pdf.ln()
+    pdf.write(5, f"Fósforo -> {fosforo:.2f} gramas por m³")
+    pdf.ln()
+    pdf.ln()
+    pdf.write(5, f"Potássio -> {potassio:.2f} gramas por m³")
+    pdf.output("relatório.pdf")
+
+
+
+
 # =================== ROTAS DA API ===================
 
-# Rota da página de Dashboard. Retorna uma lista das culturas do usuário.
-# Por enquanto, considera o usuário como o usuário padrão: "reidoagro@agro.com.br"
+# ------------------------------------------ DASHBOARD ------------------------------------------
+
+# Retorna lista de culturas que aparece na dashboard.
 @app.get("/dashboard/lista/")
 async def lista_culturas_dashboard():
     try:
@@ -77,6 +164,14 @@ async def lista_culturas_dashboard():
     finally:
         await banco_de_dados.disconnect()
 
+
+
+
+
+
+
+
+# ------------------------------------------ MINHAS CULTURAS ------------------------------------------
 
 # Retornando a lista de culturas na página de Culturas.
 @app.get("/culturas/lista/")
@@ -114,6 +209,7 @@ async def lista_culturas_minhas_culturas():
         await banco_de_dados.disconnect()
 
 
+# Retornando a lista de lavouras que aparece como opção na criação de nova cultura.
 @app.get("/culturas/lavouras/")
 async def lista_lavouras_minhas_culturas():
     try:
@@ -135,6 +231,7 @@ async def lista_lavouras_minhas_culturas():
         await banco_de_dados.disconnect()
 
 
+# Cria uma nova cultura no banco.
 @app.post("/culturas/nova-cultura/")
 async def criar_nova_cultura(dados: dict):
     try:
@@ -160,6 +257,7 @@ async def criar_nova_cultura(dados: dict):
         await banco_de_dados.disconnect()
  
 
+# Retorna os dados de uma cultura específica, para quando você acessar a página individual da mesma.
 @app.post("/cultura_especifica/dados/")
 async def dados_cultura(dados: dict):
     try:
@@ -201,6 +299,14 @@ async def dados_cultura(dados: dict):
         await banco_de_dados.disconnect()
 
 
+
+
+
+
+
+# ------------------------------------------ ANALISES ------------------------------------------
+
+# Retorna a lista de análises.
 @app.get("/analises/lista/")
 async def lista_analises():
     try:
@@ -232,12 +338,13 @@ async def lista_analises():
         await banco_de_dados.disconnect()
 
 
+# Retorna os detalhes da análise, para a página específica.
 @app.post("/analise/detalhes/")
 async def detalhes_analise_especifica(dados: dict):
     try:
         await banco_de_dados.connect()
 
-        busca = f'SELECT Analises.nomePersonalizado, Analises.dataVisita, Analises.estagio FROM Analises WHERE id = {dados["analiseId"]};'
+        busca = f'SELECT Analises.nomePersonalizado, Analises.tipo, Analises.dataVisita, Analises.estagio FROM Analises WHERE id = {dados["analiseId"]};'
         resultado = await banco_de_dados.fetch_one(busca)
 
         data_formatada = datetime.fromisoformat(str(resultado["datavisita"]))
@@ -245,6 +352,7 @@ async def detalhes_analise_especifica(dados: dict):
 
         resposta = {
             "nomePersonalizado": resultado["nomepersonalizado"],
+            "tipo": "Água" if resultado["tipo"] == 1 else "Solo",
             "estagio": resultado["estagio"],
             "dataVisita": data_formatada
         }
@@ -258,6 +366,74 @@ async def detalhes_analise_especifica(dados: dict):
         await banco_de_dados.disconnect()
 
 
+# Chamada quando o botão "Baixar Relatório" é pressionado.
+@app.post("/analise/relatorio/baixar/")
+async def criar_relatorio(dados: dict):
+    gerar_relatorio_pdf_solo(dados["nomeAnalise"])
+
+    return FileResponse("relatório.pdf", media_type="application/pdf", filename="relatório.pdf")
+
+
+# Enviando o resultado da Análise
+@app.get("/analise/resultado/solo/")
+async def enviar_resultado_solo(dados: dict):
+    try:
+
+        #SERVIDOR_EMAIL.starttls()
+        #SERVIDOR_EMAIL.login("sia.agroconnect@gmail.com", "@groetech1234")
+
+        cultura = await recomendar_analise_solo_cultura()
+        fertilizante = await recomendar_analise_solo_fertilizante()
+
+        #texto = f"Olá, a sua Análise {dados['nomeAnalise']} está completa! \n Baseado nos resultados encontrados, recomendados {resultado} para o seu tipo de solo! Boa plantação!"
+
+        #SERVIDOR_EMAIL.sendmail("sia.agroconnect@gmail.com", "kalimarapeleteiro@gmail.com", texto)
+
+        return {"cultura": cultura, "fertilizante": fertilizante}
+        
+    finally:
+        pass
+        #SERVIDOR_EMAIL.quit()
+
+
+
+
+
+
+
+
+
+
+# ------------------------------------------ ESTAÇÕES ------------------------------------------
+
+# Buscando por Estações
+@app.get("/estacoes/lista/")
+async def lista_estacoes():
+    try:
+        await banco_de_dados.connect()
+        busca = """SELECT * FROM retornarTodasAsEstacoes();"""
+        
+        resultado = await banco_de_dados.fetch_all(busca)
+
+        estacoes = list()
+        
+        for estacao in resultado:
+            estacoes.append({"nomePersonalizado": estacao["nomepersonalizado"],
+                             "ativo": estacao["ativo"],
+                             "cultura": estacao["cultura"]},
+                             )
+        
+        return {"Estacoes": estacoes}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await banco_de_dados.disconnect()
+
+
+
+
+# Execução
 if __name__ == "__main__":
     import uvicorn
     

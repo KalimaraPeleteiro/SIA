@@ -18,8 +18,8 @@ const DroneInformativo = () => {
 
             <div className={styles.containerText}>
                 <div className={styles.headerInfo}>
-                    <h1>AGRO-1</h1>
-                    <h2>O primeiro drone agrário da AgroConnect</h2>
+                    <h1 className={styles.headerInfo}>AGRO-1</h1>
+                    <h2 className={styles.headerInfo}>O primeiro drone agrário da AgroConnect</h2>
                 </div>
 
                 <p className={styles.EstacaoInformativo1}>

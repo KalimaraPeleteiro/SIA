@@ -55,7 +55,7 @@ return (
                     <h1 className={styles.fontHeader}>Análise de Água</h1>
                 </header>
 
-                <p className={styles.textAnaliseEncomenda}>Não sabe se aquela fonte de água é utilizável ou não? Se é segura para consumo? Enciomende a análise e uma equipe especializada da AgroConnect irá colher amostras e retornar uma resposta especializada!</p>
+                <p className={styles.textAnaliseEncomenda}>Não sabe se aquela fonte de água é utilizável ou não? Se é segura para consumo? Encomende a análise e uma equipe especializada da AgroConnect irá colher amostras e retornar uma resposta especializada!</p>
 
                 <button className={styles.buttonAnaliseEncomenda} onClick={() => handleChangePageNovaAnalise("agua")}>Encomedar Análise</button>
             </div>

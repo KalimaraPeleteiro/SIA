@@ -23,7 +23,7 @@ const DroneVenda = () => {
         <div className={styles.containerProdutos}>
           <div className={styles.itemContainer}>
             <div className={styles.item}>
-              <h2 className={styles.headerItem}>AGRO1</h2>
+              <h2 className={styles.headerItem}>AGRO-1</h2>
               <p className={styles.itemText}>Nosso drone especializado de identificação de pragas.</p>
               <img src={agro1}/>
               <button className={styles.buttonItem} onClick={() => handleChangePageNovoDrone("agro1")}>Comprar - R$ 1000</button>

@@ -49,7 +49,7 @@ const AgroOne = () => {
                 </header>
 
                 <p className={styles.textEstacaoBox}>
-                     um drone e ele está parado em sua estação? Ele não está ativo! Ative-o agora mesmo!
+                     Comprou um drone e ele está parado em sua estação? Ele não está ativo! Ative-o agora mesmo!
                 </p>
 
 
@@ -61,7 +61,7 @@ const AgroOne = () => {
                     <h1 className={styles.fontHeader}>Saiba Mais!</h1>
                 </header>
 
-                <p className={styles.textEstacaoBox}>Não sabe o que é AGRO-1 nem como ele funciona? Venha que te ensinamos!</p>
+                <p className={styles.textEstacaoBox}>Não sabe o que é AGRO-1 nem qual a sua utilidade? Venha que te ensinamos!</p>
 
                 <button className={styles.buttonEstacaoBox} onClick={handleChangePageSaibaMais} >Conhecer</button>
             </div>
@@ -76,7 +76,7 @@ const AgroOne = () => {
                 ) : 
                 (
                     <div className={styles.emptyList}>
-                        <p>Você ainda não sincronizou nenhuma drones.</p>
+                        <p>Você ainda não sincronizou nenhum drone.</p>
                     </div>
                 )
                 }

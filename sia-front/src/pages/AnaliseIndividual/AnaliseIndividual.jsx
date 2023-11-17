@@ -41,6 +41,62 @@ const AnaliseIndividual = () => {
       fetchData();
     }, [analiseId]);
 
+    const downloadPDFSolo = async () => {
+
+      const data = {
+        "nomeAnalise": analiseData.nomePersonalizado
+      }
+
+      try {
+          const response = await axios.post('http://127.0.0.1:8000/analise/relatorio/baixar/', data, {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              "responseType": "blob"
+          });
+          if (response.status === 200) {
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', 'Relatório.pdf');
+              document.body.appendChild(link);
+              link.click();
+          } else {
+              console.error('Erro na solicitação POST');
+          }
+      } catch (error) {
+          console.error('Erro ao enviar a solicitação POST:', error);
+      }
+   };
+
+   const downloadPDFAgua = async () => {
+
+    const data = {
+      "nomeAnalise": analiseData.nomePersonalizado
+    }
+
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/analise/relatorio/baixar/', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            "responseType": "blob"
+        });
+        if (response.status === 200) {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Relatório.pdf');
+            document.body.appendChild(link);
+            link.click();
+        } else {
+            console.error('Erro na solicitação POST');
+        }
+    } catch (error) {
+        console.error('Erro ao enviar a solicitação POST:', error);
+    }
+ };
+
 
     console.log(analiseData)
   
@@ -108,7 +164,7 @@ const AnaliseIndividual = () => {
 
         <span className={`${styles.circulo3} ${analiseData.estagio > 2 ? styles.circuloAtivo: ''}`}>3</span>
         <div className={styles.rectangleleft3}></div>
-        <p className={styles.textBola3}>Análise Laborial</p>
+        <p className={styles.textBola3}>Análise Laboratorial</p>
         <img src={analiseLaboral} className={styles.imagem3}/>
 
         {analiseData.estagio < 3 ? (
@@ -125,15 +181,25 @@ const AnaliseIndividual = () => {
         )
         }
 
-        {analiseData.estagio > 3 ? (
+        {analiseData.estagio > 3 && analiseData.tipo === "Solo" ? (
           <div>
             <p className={styles.descriptionBola3}>Relatório Pronto!</p>
-            <button className={styles.buttonRelatorio}>Baixar Relatório</button>
+            <button className={styles.buttonRelatorio} onClick={downloadPDFSolo}>Baixar Relatório</button>
           </div>
         ) : (
           <p></p>
         )
-        }        
+        }
+
+        {analiseData.estagio > 3 && analiseData.tipo === "Água" ? (
+          <div>
+            <p className={styles.descriptionBola3}>Relatório Pronto!</p>
+            <button className={styles.buttonRelatorio} onClick={downloadPDFAgua}>Baixar Relatório</button>
+          </div>
+        ) : (
+          <p></p>
+        )
+        }         
 
         <div className={styles.rectangle3}></div>
         <div  className={styles.rectangle4}></div>
@@ -150,7 +216,7 @@ const AnaliseIndividual = () => {
 
         {analiseData.estagio === 4 ? (
           <div>
-            <p className={styles.descriptionBola4}>É hora de descobrir os resultados! Envio o relatório e receba os resultados.</p>
+            <p className={styles.descriptionBola4}>É hora de descobrir os resultados! Envie o relatório e receba os resultados.</p>
             <button className={styles.buttonEnviarRelatorio}>Enviar Relatório</button>
           </div>
         ) : (
