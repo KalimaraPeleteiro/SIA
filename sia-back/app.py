@@ -12,7 +12,8 @@ import smtplib
 
 # Preparando o Banco
 URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA"
-SERVIDOR_EMAIL = smtplib.SMTP('smtp.gmail.com', 587)
+EMAIL_SIA = "sia.agroconnect@outlook.com"
+SENHA_SIA = "@groetech1234"
 
 banco_de_dados = Database(URL_BANCO)
 
@@ -375,25 +376,24 @@ async def criar_relatorio(dados: dict):
 
 
 # Enviando o resultado da Análise
-@app.get("/analise/resultado/solo/")
+@app.post("/analise/resultado/solo/")
 async def enviar_resultado_solo(dados: dict):
     try:
-
-        #SERVIDOR_EMAIL.starttls()
-        #SERVIDOR_EMAIL.login("sia.agroconnect@gmail.com", "@groetech1234")
+        SERVIDOR_EMAIL = smtplib.SMTP('smtp-mail.outlook.com', 587)
+        SERVIDOR_EMAIL.starttls()
+        SERVIDOR_EMAIL.login(EMAIL_SIA, SENHA_SIA)
 
         cultura = await recomendar_analise_solo_cultura()
         fertilizante = await recomendar_analise_solo_fertilizante()
 
-        #texto = f"Olá, a sua Análise {dados['nomeAnalise']} está completa! \n Baseado nos resultados encontrados, recomendados {resultado} para o seu tipo de solo! Boa plantação!"
+        texto = f"Subject: Resultado da Análise '{dados['nomeAnalise']}'\n\nOlá, a sua Análise '{dados['nomeAnalise']}' está completa! \n\nBaseado nos resultados encontrados, recomendamos uma combinação de {cultura['Resposta']} e {fertilizante['Resposta']} para o seu tipo de solo! Boa plantação!".encode('utf-8')
 
-        #SERVIDOR_EMAIL.sendmail("sia.agroconnect@gmail.com", "kalimarapeleteiro@gmail.com", texto)
+        SERVIDOR_EMAIL.sendmail(EMAIL_SIA, "kalimarapeleteiro@gmail.com", texto)
 
-        return {"cultura": cultura, "fertilizante": fertilizante}
+        return JSONResponse(content={"Mensagem": "E-mail Enviado."}, status_code=200)
         
     finally:
-        pass
-        #SERVIDOR_EMAIL.quit()
+        SERVIDOR_EMAIL.quit()
 
 
 
