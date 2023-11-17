@@ -6,10 +6,13 @@ import analiseSolo from './images/analiseSolo.png'
 import AnaliseComponent from "./components/AnaliseComponent"
 import { useState, useEffect } from "react"
 import axios from "axios";
+import { useNavigate } from "react-router-dom"
 
 
 const Analise = () => {
+
  const [analises, setAnalises] = useState([]);
+ const navigate = useNavigate();
 
  const fetchAnalises = async () => {
     try {
@@ -32,6 +35,14 @@ const Analise = () => {
 
   console.log(analises)
 
+const handleChangePageHistorico = () => {
+    navigate('/analises/historico')
+}
+
+const handleChangePageNovaAnalise = (analysisType) => {
+    navigate(`/analises/encomedarAnalise/${analysisType}`);
+ }
+ 
 
 return (
     <>
@@ -46,7 +57,7 @@ return (
 
                 <p className={styles.textAnaliseEncomenda}>Não sabe se aquela fonte de água é utilizável ou não? Se é segura para consumo? Enciomende a análise e uma equipe especializada da AgroConnect irá colher amostras e retornar uma resposta especializada!</p>
 
-                <button className={styles.buttonAnaliseEncomenda}> Encomedar Análise</button>
+                <button className={styles.buttonAnaliseEncomenda} onClick={() => handleChangePageNovaAnalise("agua")}>Encomedar Análise</button>
             </div>
             <div className={styles.analiseEncomenda}>
                 <header className={styles.headerAnaliseEncomenda}>
@@ -60,7 +71,7 @@ return (
                 </p>
 
 
-                <button className={styles.buttonAnaliseEncomenda}>Acessar Histórico</button>
+                <button className={styles.buttonAnaliseEncomenda} onClick={handleChangePageHistorico}>Acessar Histórico</button>
             </div>
             <div className={styles.analiseEncomenda}>
                 <header className={styles.headerAnaliseEncomenda}>
@@ -70,7 +81,7 @@ return (
 
                 <p className={styles.textAnaliseEncomenda}>O produto ideal para cultivo varia de acordo com os nutrientes do solo. Encomende uma análise especializada para descobrir a melhor lavoura e garanta produtividade máxima!</p>
 
-                <button className={styles.buttonAnaliseEncomenda}>Encomedar Análise</button>
+                <button className={styles.buttonAnaliseEncomenda} onClick={() => handleChangePageNovaAnalise("solo")}>Encomedar Análise</button>
             </div>
         </div>
 

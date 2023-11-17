@@ -2,9 +2,18 @@ import Header from "../../../components/Header"
 import styles from "./DroneVenda.module.css"
 import agro1 from "../images/agro1.png"
 import agroHouse from "../images/agroHouse.png"
+import { useNavigate } from "react-router-dom"
 
 
 const DroneVenda = () => {
+  const navigate = useNavigate();
+
+  const handleChangePageNovoDrone = (droneOrHouse) => {
+    navigate(`/controlePestes/vendaDrone/${droneOrHouse}`);
+  }
+  
+
+
   return (
     <>
          <Header textHeader={"Livre-se dos miseráveis que comprometem a sua lavroura."} />
@@ -17,13 +26,14 @@ const DroneVenda = () => {
               <h2 className={styles.headerItem}>AGRO1</h2>
               <p className={styles.itemText}>Nosso drone especializado de identificação de pragas.</p>
               <img src={agro1}/>
-              <button className={styles.buttonItem}>Comprar - R$1000</button>
+              <button className={styles.buttonItem} onClick={() => handleChangePageNovoDrone("agro1")}>Comprar - R$ 1000</button>
+
             </div>
             <div className={styles.item}>
               <h2 className={styles.headerItem}>Agro House</h2>
               <p className={styles.itemText}>O local de armazenamento dos drones. Todo dia de manhã, eles automaticamente saem de forma coordenada para análise.</p>
               <img src={agroHouse} className={styles.imageDrone}/>
-              <button className={styles.buttonItem}>Comprar - R$ 20000</button>
+              <button className={styles.buttonItem} onClick={() => handleChangePageNovoDrone("agroHouse")}>Comprar - R$ 20000</button>
             </div>
           </div>
 

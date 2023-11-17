@@ -1,6 +1,6 @@
 .h1Main {
     margin-left: 6rem;
-    margin-top: 3rem;
+    margin-top: 1rem;
 }
 
 
@@ -67,10 +67,6 @@
     background: #FFC632;
     border-radius: 1.2rem;
     font-size: 1.3rem;
-}
-
-.buttonStyle:hover {
-    background: #FFD966;
 }
 
 @media (max-width: 1366px) { 
