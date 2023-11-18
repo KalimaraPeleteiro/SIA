@@ -706,6 +706,25 @@ async def lista_culturas_sem_estacao(dados: dict):
         SERVIDOR_EMAIL.quit()
 
 
+@app.post("/estacoes/ativar/")
+async def ativar_estacao(dados: dict):
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        comando = f"""UPDATE Estacoes
+                      SET ativo = true
+                      WHERE chave = '{dados['chave']}' AND ativo = false;"""
+        await BANCO_DE_DADOS.execute(comando)
+
+        return JSONResponse(content={"Mensagem": "Estação Ativa"}, status_code=200)
+    
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+
+
 
 
 # Execução
