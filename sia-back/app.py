@@ -14,8 +14,7 @@ import smtplib
 URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA"
 EMAIL_SIA = "sia.agroconnect@outlook.com"
 SENHA_SIA = "@groetech1234"
-
-banco_de_dados = Database(URL_BANCO)
+BANCO_DE_DADOS = Database(URL_BANCO)
 
 
 app = FastAPI()
@@ -111,6 +110,46 @@ async def recomendar_analise_solo_fertilizante():
                 return "Erro de Colunas"
 
 
+async def recomendar_analise_agua():
+    rota = "http://127.0.0.1:5000/analise/agua/"
+
+    # Por enquanto, vou gerar dados aleatórios.
+    body = {
+        "Alumínio": random.uniform(0.0, 5.05),
+        "Amônia": random.uniform(0.0, 29.8),
+        "Arsênio": random.uniform(0.0, 1.05),
+        "Bário": random.uniform(0.0, 4.94),
+        "Cádmio": random.uniform(0.0, 0.13),
+        "Cloro": random.uniform(0.0, 8.68),
+        "Cromo": random.uniform(0.0, 0.9),
+        "Cobre": random.uniform(0.0, 2.0),
+        "Flúor": random.uniform(0.0, 1.5),
+        "Bactérias": random.uniform(0.0, 1.0),
+        "Vírus": random.uniform(0.0, 1.0),
+        "Chumbo": random.uniform(0.0, 0.2),
+        "Nitrato": random.uniform(0.0, 19.8),
+        "Nitrito": random.uniform(0.0, 2.93),
+        "Mercúrio": random.uniform(0.0, 0.01),
+        "Perclorato": random.uniform(0.0, 60.0),
+        "Rádio": random.uniform(0.0, 7.99),
+        "Selênio": random.uniform(0.0, 0.1),
+        "Prata": random.uniform(0.0, 0.5),
+        "Urânio": random.uniform(0.0, 0.09)
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(rota, data = json.dumps(body), headers = headers) as response:
+            if response.status == 200:
+                resultado = await response.json()
+                return resultado
+            elif response.status == 400:
+                return "Erro de Colunas"
+
+
 def gerar_relatorio_pdf_solo(nomeAnalise):
 
     nitrogenio = random.uniform(0.0, 140.0)
@@ -137,6 +176,102 @@ def gerar_relatorio_pdf_solo(nomeAnalise):
     pdf.output("relatório.pdf")
 
 
+def gerar_relatorio_pdf_agua(nomeAnalise):
+
+    dicionario = dict()
+    dicionario['Alumínio'] = random.uniform(0.0, 5.05)
+    dicionario['Amônia'] = random.uniform(0.0, 29.8)
+    dicionario['Arsênio'] = random.uniform(0.0, 1.05)
+    dicionario['Bário'] = random.uniform(0.0, 4.94)
+    dicionario['Cádmio'] = random.uniform(0.0, 0.13)
+    dicionario['Cloro'] = random.uniform(0.0, 8.68)
+    dicionario['Cromo'] = random.uniform(0.0, 0.9)
+    dicionario['Cobre'] = random.uniform(0.0, 2.0)
+    dicionario['Flúor'] = random.uniform(0.0, 1.5)
+    dicionario['Bactérias'] = random.uniform(0.0, 1.0)
+    dicionario['Vírus'] = random.uniform(0.0, 1.0)
+    dicionario['Chumbo'] = random.uniform(0.0, 0.2)
+    dicionario['Nitratos'] = random.uniform(0.0, 19.8)
+    dicionario['Nitritos'] = random.uniform(0.0, 2.93)
+    dicionario['Mercúrio'] = random.uniform(0.0, 0.01)
+    dicionario['Perclorato'] = random.uniform(0.0, 60.0)
+    dicionario['Rádio'] = random.uniform(0.0, 7.99)
+    dicionario['Selênio'] = random.uniform(0.0, 0.1)
+    dicionario['Prata'] = random.uniform(0.0, 0.5)
+    dicionario['Urânio'] = random.uniform(0.0, 0.09)
+
+    pdf = FPDF()
+
+    pdf.add_page()
+    pdf.set_font("Arial", size = 20)
+
+    pdf.image("AgroLogo.png",  x=150, y=275, w=36, h = 11)
+    pdf.write(20, f"Relatório de Solo da Água '{nomeAnalise}'")
+    pdf.ln()
+    pdf.set_font_size(12)
+
+    for chave, valor in dicionario.items():
+        pdf.write(5, f"{chave} -> {valor:.2f} miligramas por m³")
+        pdf.ln()
+        pdf.ln()
+    
+    pdf.output("relatório.pdf")
+
+
+async def gerar_relatorio_pdf_solo_historico(idAnalise):
+    await BANCO_DE_DADOS.connect()
+
+    busca = f"SELECT * FROM ParametrosSolo WHERE analise_id = {idAnalise}"
+    resposta = await BANCO_DE_DADOS.fetch_all(busca)
+
+    pdf = FPDF()
+
+    pdf.add_page()
+    pdf.set_font("Arial", size = 20)
+
+    pdf.image("AgroLogo.png",  x=150, y=275, w=36, h = 11)
+    pdf.write(20, "Resultado")
+    pdf.ln()
+    pdf.set_font_size(12)
+
+    for resultado in resposta:
+        pdf.write(5, f"Cultura -> {resultado['cultura']}")
+        pdf.ln()
+        pdf.ln()
+        pdf.write(5, f"Fertilizante -> {resultado['fertilizante']}")
+
+    pdf.output("relatório.pdf")
+
+    await BANCO_DE_DADOS.disconnect()
+
+
+async def gerar_relatorio_pdf_agua_historico(idAnalise):
+    await BANCO_DE_DADOS.connect()
+
+    busca = f"SELECT * FROM ParametrosAgua WHERE analise_id = {idAnalise}"
+    resposta = await BANCO_DE_DADOS.fetch_all(busca)
+
+    pdf = FPDF()
+
+    pdf.add_page()
+    pdf.set_font("Arial", size = 20)
+
+    pdf.image("AgroLogo.png",  x=150, y=275, w=36, h = 11)
+    pdf.write(20, "Resultado")
+    pdf.ln()
+    pdf.set_font_size(12)
+
+    if resposta[0]["saudavel"] is True:
+        pdf.write(5, "Água própria para consumo.")
+    elif resposta[0]["saudavel"] is False:
+        pdf.write(5, "Água não potável.")
+
+
+    pdf.output("relatório.pdf")
+
+    await BANCO_DE_DADOS.disconnect()
+
+
 
 
 # =================== ROTAS DA API ===================
@@ -147,9 +282,9 @@ def gerar_relatorio_pdf_solo(nomeAnalise):
 @app.get("/dashboard/lista/")
 async def lista_culturas_dashboard():
     try:
-        await banco_de_dados.connect()
+        await BANCO_DE_DADOS.connect()
         busca = "SELECT * FROM retornarTodasCulturasUsuarioDashboard('reidogado@agro.com.br');"
-        resultado = await banco_de_dados.fetch_all(busca)
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
 
         culturas = list()
         for cultura in resultado:
@@ -163,7 +298,7 @@ async def lista_culturas_dashboard():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
 
 
 
@@ -178,9 +313,9 @@ async def lista_culturas_dashboard():
 @app.get("/culturas/lista/")
 async def lista_culturas_minhas_culturas():
     try:
-        await banco_de_dados.connect()
+        await BANCO_DE_DADOS.connect()
         busca = "SELECT * FROM retornarListaCulturasDetalhes('reidogado@agro.com.br');"
-        resultado = await banco_de_dados.fetch_all(busca)
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
 
         culturas = list()
         for cultura in resultado:
@@ -207,16 +342,16 @@ async def lista_culturas_minhas_culturas():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
 
 
 # Retornando a lista de lavouras que aparece como opção na criação de nova cultura.
 @app.get("/culturas/lavouras/")
 async def lista_lavouras_minhas_culturas():
     try:
-        await banco_de_dados.connect()
+        await BANCO_DE_DADOS.connect()
         busca = "SELECT * FROM Lavouras;"
-        resultado = await banco_de_dados.fetch_all(busca)
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
 
         lavouras = list()
 
@@ -229,25 +364,25 @@ async def lista_lavouras_minhas_culturas():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
 
 
 # Cria uma nova cultura no banco.
 @app.post("/culturas/nova-cultura/")
 async def criar_nova_cultura(dados: dict):
     try:
-        await banco_de_dados.connect()
+        await BANCO_DE_DADOS.connect()
 
         # Cultura Criada
         comando = f"CALL novaCultura('{dados['nomeCultura']}', '{dados['produto']}')"
-        await banco_de_dados.execute(comando)
+        await BANCO_DE_DADOS.execute(comando)
 
         # Agora, vamos buscar pelo seu ID e ligá-la ao Usuário
         busca = f"SELECT * FROM obterIdCultura('{dados['nomeCultura']}')"
-        resposta = await banco_de_dados.fetch_one(busca)
+        resposta = await BANCO_DE_DADOS.fetch_one(busca)
 
         comando = f"CALL adicionarCulturaAoUsuario({resposta['obteridcultura']}, 1)"
-        await banco_de_dados.execute(comando)
+        await BANCO_DE_DADOS.execute(comando)
 
 
         return JSONResponse(content={"Mensagem": "Post Bem-Sucedido"}, status_code=200)
@@ -255,21 +390,21 @@ async def criar_nova_cultura(dados: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
  
 
 # Retorna os dados de uma cultura específica, para quando você acessar a página individual da mesma.
 @app.post("/cultura_especifica/dados/")
 async def dados_cultura(dados: dict):
     try:
-        await banco_de_dados.connect()
+        await BANCO_DE_DADOS.connect()
 
         # Agora, vamos buscar pelo seu ID e ligá-la ao Usuário
         busca = f"SELECT * FROM obterIdCultura('{dados['nomeCultura']}')"
-        resultado = await banco_de_dados.fetch_one(busca)
+        resultado = await BANCO_DE_DADOS.fetch_one(busca)
 
         segunda_busca = f"SELECT * FROM obterDetalhesCultura({resultado['obteridcultura']})"
-        segundo_resultado = await banco_de_dados.fetch_one(segunda_busca)
+        segundo_resultado = await BANCO_DE_DADOS.fetch_one(segunda_busca)
 
         data_formatada = datetime.fromisoformat(str(segundo_resultado["datacriacao"]))
         data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
@@ -297,7 +432,7 @@ async def dados_cultura(dados: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
 
 
 
@@ -311,12 +446,14 @@ async def dados_cultura(dados: dict):
 @app.get("/analises/lista/")
 async def lista_analises():
     try:
-        await banco_de_dados.connect()
-        busca = """SELECT Analises.id, Analises.nomePersonalizado, TiposAnalise.tipo, 
-                   Analises.dataEncomenda FROM Analises LEFT JOIN TiposAnalise ON TiposAnalise.id = 
-                   Analises.tipo;"""
+        await BANCO_DE_DADOS.connect()
+        busca = """SELECT Analises.id, Analises.nomePersonalizado, 
+	                      TiposAnalise.tipo, Analises.dataEncomenda,
+	                      existeParametroAnalise(Analises.id) AS existeParametro
+                    FROM Analises 
+                    LEFT JOIN TiposAnalise ON TiposAnalise.id = Analises.tipo;"""
         
-        resultado = await banco_de_dados.fetch_all(busca)
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
 
         analises = list()
 
@@ -328,7 +465,8 @@ async def lista_analises():
             analises.append({"id": analise["id"],
                              "nomePersonalizado": analise["nomepersonalizado"],
                              "tipo": analise["tipo"],
-                             "dataEncomenda": data_formatada},
+                             "dataEncomenda": data_formatada,
+                             "existeParametro": analise["existeparametro"]},
                              )
         
         return {"Analises": analises}
@@ -336,17 +474,17 @@ async def lista_analises():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
 
 
 # Retorna os detalhes da análise, para a página específica.
 @app.post("/analise/detalhes/")
 async def detalhes_analise_especifica(dados: dict):
     try:
-        await banco_de_dados.connect()
+        await BANCO_DE_DADOS.connect()
 
         busca = f'SELECT Analises.nomePersonalizado, Analises.tipo, Analises.dataVisita, Analises.estagio FROM Analises WHERE id = {dados["analiseId"]};'
-        resultado = await banco_de_dados.fetch_one(busca)
+        resultado = await BANCO_DE_DADOS.fetch_one(busca)
 
         data_formatada = datetime.fromisoformat(str(resultado["datavisita"]))
         data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
@@ -360,17 +498,44 @@ async def detalhes_analise_especifica(dados: dict):
         
         return resposta 
 
-    
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
+
+
+@app.post("/analise/nova-analise/")
+async def criar_nova_analise(dados:dict):   
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        if dados["dataVisita"] is not None:
+            comando = f"CALL novaAnalise('{dados['nomePersonalizado']}', {dados['tipo']}, {dados['dataVisita']})"
+        else:
+            comando = f"CALL novaAnalise('{dados['nomePersonalizado']}', {dados['tipo']})"
+        
+        await BANCO_DE_DADOS.execute(comando)
+
+        return JSONResponse(content={"Mensagem": "Post Bem-Sucedido"}, status_code=200)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
 
 
 # Chamada quando o botão "Baixar Relatório" é pressionado.
-@app.post("/analise/relatorio/baixar/")
-async def criar_relatorio(dados: dict):
+@app.post("/analise/relatorio/baixar/solo/")
+async def criar_relatorio_solo(dados: dict):
     gerar_relatorio_pdf_solo(dados["nomeAnalise"])
+
+    return FileResponse("relatório.pdf", media_type="application/pdf", filename="relatório.pdf")
+
+
+# Chamada quando o botão "Baixar Relatório" é pressionado.
+@app.post("/analise/relatorio/baixar/agua/")
+async def criar_relatorio_agua(dados: dict):
+    gerar_relatorio_pdf_agua(dados["nomeAnalise"])
 
     return FileResponse("relatório.pdf", media_type="application/pdf", filename="relatório.pdf")
 
@@ -379,6 +544,8 @@ async def criar_relatorio(dados: dict):
 @app.post("/analise/resultado/solo/")
 async def enviar_resultado_solo(dados: dict):
     try:
+        await BANCO_DE_DADOS.connect()
+
         SERVIDOR_EMAIL = smtplib.SMTP('smtp-mail.outlook.com', 587)
         SERVIDOR_EMAIL.starttls()
         SERVIDOR_EMAIL.login(EMAIL_SIA, SENHA_SIA)
@@ -390,10 +557,60 @@ async def enviar_resultado_solo(dados: dict):
 
         SERVIDOR_EMAIL.sendmail(EMAIL_SIA, "kalimarapeleteiro@gmail.com", texto)
 
+        comando = f"CALL finalizarAnaliseSolo({dados['analiseId']}, '{cultura['Resposta']}', '{fertilizante['Resposta']}');"
+        await BANCO_DE_DADOS.execute(comando)
+
         return JSONResponse(content={"Mensagem": "E-mail Enviado."}, status_code=200)
         
     finally:
         SERVIDOR_EMAIL.quit()
+        await BANCO_DE_DADOS.disconnect()
+
+
+# Enviando o resultado da Análise
+@app.post("/analise/resultado/agua/")
+async def enviar_resultado_agua(dados: dict):
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        SERVIDOR_EMAIL = smtplib.SMTP('smtp-mail.outlook.com', 587)
+        SERVIDOR_EMAIL.starttls()
+        SERVIDOR_EMAIL.login(EMAIL_SIA, SENHA_SIA)
+
+        resultado = await recomendar_analise_agua()
+
+        if resultado["Resposta"] == "Potável":
+            texto = f"Subject: Resultado da Análise '{dados['nomeAnalise']}'\n\nOlá, a sua Análise '{dados['nomeAnalise']}' está completa! \n\nBaseado nos resultados encontrados, a água é potável!".encode('utf-8')
+            comando = f"CALL finalizarAnaliseAgua({dados['analiseId']}, {True});"
+        if resultado["Resposta"] == "Insalubre":
+            texto = f"Subject: Resultado da Análise '{dados['nomeAnalise']}'\n\nOlá, a sua Análise '{dados['nomeAnalise']}' está completa! \n\nBaseado nos resultados encontrados, a água não é própria para consumo.".encode('utf-8')
+            comando = f"CALL finalizarAnaliseAgua({dados['analiseId']}, {False});"
+
+
+        SERVIDOR_EMAIL.sendmail(EMAIL_SIA, "kalimarapeleteiro@gmail.com", texto)
+        await BANCO_DE_DADOS.execute(comando)
+
+        return JSONResponse(content={"Mensagem": "E-mail Enviado."}, status_code=200)
+        
+    finally:
+        SERVIDOR_EMAIL.quit()
+        await BANCO_DE_DADOS.disconnect()
+
+
+# Chamada quando o botão "Baixar Relatório" é pressionado.
+@app.post("/analise/historico/baixar/solo/")
+async def criar_relatorio_agua(dados: dict):
+    await gerar_relatorio_pdf_solo_historico(dados["analiseId"])
+
+    return FileResponse("relatório.pdf", media_type="application/pdf", filename="relatório.pdf")
+
+
+@app.post("/analise/historico/baixar/agua/")
+async def criar_relatorio_agua(dados: dict):
+    await gerar_relatorio_pdf_agua_historico(dados["analiseId"])
+
+    return FileResponse("relatório.pdf", media_type="application/pdf", filename="relatório.pdf")
+
 
 
 
@@ -410,10 +627,10 @@ async def enviar_resultado_solo(dados: dict):
 @app.get("/estacoes/lista/")
 async def lista_estacoes():
     try:
-        await banco_de_dados.connect()
+        await BANCO_DE_DADOS.connect()
         busca = """SELECT * FROM retornarTodasAsEstacoes();"""
         
-        resultado = await banco_de_dados.fetch_all(busca)
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
 
         estacoes = list()
         
@@ -428,7 +645,65 @@ async def lista_estacoes():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        await banco_de_dados.disconnect()
+        await BANCO_DE_DADOS.disconnect()
+
+
+@app.get("/estacoes/lista/culturas/")
+async def lista_culturas_sem_estacao():
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        busca = """SELECT Culturas.nomePersonalizado 
+                   FROM Culturas
+                   LEFT JOIN Estacoes ON Estacoes.cultura_id = Culturas.id
+                   WHERE Estacoes.cultura_id IS NULL;"""
+        
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
+
+        culturas = list()
+        
+        for cultura in resultado:
+            culturas.append({"nomePersonalizado": cultura["nomepersonalizado"]})
+        
+        return {"Culturas": culturas}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+
+
+@app.post("/estacoes/nova-estacao/")
+async def lista_culturas_sem_estacao(dados: dict):
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        # Agora, vamos buscar pelo seu ID e ligá-la ao Usuário
+        busca = f"SELECT * FROM obterIdCultura('{dados['nomeCultura']}')"
+        resposta = await BANCO_DE_DADOS.fetch_one(busca)
+
+        comando = f"CALL novaEstacao('{dados['nomePersonalizado']}', {dados['tipoEstacao']}, {resposta['obteridcultura']})"
+        await BANCO_DE_DADOS.execute(comando)
+
+        busca_estacao = f"SELECT Estacoes.chave FROM Estacoes WHERE Estacoes.nomePersonalizado = '{dados['nomePersonalizado']}';"
+        resposta_busca = await BANCO_DE_DADOS.fetch_one(busca_estacao)
+
+        SERVIDOR_EMAIL = smtplib.SMTP('smtp-mail.outlook.com', 587)
+        SERVIDOR_EMAIL.starttls()
+        SERVIDOR_EMAIL.login(EMAIL_SIA, SENHA_SIA)
+
+        texto = f"Subject: Compra de Estação '{dados['nomePersonalizado']}'\n\nOlá, parabéns por adquirir uma nova estação meteorológica. Em breve, funcionários da AgroConnect irão até você para realizar a instalação. Uma vez concluído o processo, lembre-se de ativar a sua estação! Para isso, use a chave '{resposta_busca['chave']}'!".encode('utf-8')
+
+        SERVIDOR_EMAIL.sendmail(EMAIL_SIA, "kalimarapeleteiro@gmail.com", texto)
+
+        return JSONResponse(content={"Mensagem": "Post Bem-Sucedido"}, status_code=200)
+    
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+        SERVIDOR_EMAIL.quit()
 
 
 

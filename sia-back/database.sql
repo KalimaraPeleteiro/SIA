@@ -81,6 +81,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION existeParametroAnalise(idAnalise INTEGER) 
+RETURNS BOOLEAN AS $$
+DECLARE
+   existe BOOLEAN;
+BEGIN
+   SELECT EXISTS (
+       SELECT 1 FROM (
+           SELECT 1 FROM ParametrosSolo WHERE ParametrosSolo.analise_id = idAnalise
+           UNION ALL
+           SELECT 1 FROM ParametrosAgua WHERE ParametrosAgua.analise_id = idAnalise
+       ) AS subquery
+   ) INTO existe;
+   
+   RETURN existe;
+END;
+$$ LANGUAGE plpgsql;
+
 
 
 
@@ -192,32 +209,15 @@ CREATE TABLE Analises(
 
 CREATE TABLE ParametrosAgua(
 	analise_id integer,
-	aluminio numeric(7, 2) DEFAULT 0,
-	arsenio numeric(7, 2) DEFAULT 0,
-	bario numeric(7, 2) DEFAULT 0,
-	cadmio numeric(7, 2) DEFAULT 0,
-	cloro numeric(7, 2) DEFAULT 0,
-	cromo numeric(7, 2) DEFAULT 0,
-	fluor numeric(7, 2) DEFAULT 0,
-	virus numeric(7, 2) DEFAULT 0,
-	bacteria numeric(7, 2) DEFAULT 0,
-	chumbo numeric(7, 2) DEFAULT 0,
-	nitrato numeric(7, 2) DEFAULT 0,
-	nitrito numeric(7, 2) DEFAULT 0,
-	mercurio numeric(7, 2) DEFAULT 0,
-	perclorato numeric(7, 2) DEFAULT 0,
-	radio numeric(7, 2) DEFAULT 0,
-	prata numeric(7, 2) DEFAULT 0,
-	uranio numeric(7, 2) DEFAULT 0,
+	saudavel boolean,
 
 	FOREIGN KEY (analise_id) REFERENCES Analises(id)
 );
 
 CREATE TABLE ParametrosSolo(
 	analise_id integer,
-	potassio numeric(7, 2),
-	nitrogenio numeric(7, 2),
-	fosforo numeric(7, 2),
+	cultura text,
+	fertilizante text,
 	
 	FOREIGN KEY (analise_id) REFERENCES Analises(id)
 );
@@ -330,10 +330,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE PROCEDURE novaAnalise(nome text, tipo integer) AS $$
+CREATE OR REPLACE PROCEDURE novaAnalise(nome text, tipo integer, dataVisita timestamp DEFAULT NOW() + INTERVAL '7 DAYS') AS $$
 BEGIN
-	INSERT INTO Analises (nomePersonalizado, tipo)
-	VALUES(nome, tipo);
+	INSERT INTO Analises (nomePersonalizado, tipo, dataVisita)
+	VALUES(nome, tipo, dataVisita);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -345,21 +345,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE PROCEDURE finalizarAnaliseAgua(
-    analise_id integer, p_aluminio numeric = 0, p_arsenio numeric = 0,
-    p_bario numeric = 0, p_cadmio numeric = 0, p_cloro numeric = 0,
-    p_cromo numeric = 0, p_fluor numeric = 0, p_virus numeric = 0,
-    p_bacteria numeric = 0, p_chumbo numeric = 0, p_nitrato numeric = 0,
-    p_nitrito numeric = 0, p_mercurio numeric = 0, p_perclorato numeric = 0,
-    p_radio numeric = 0, p_prata numeric = 0, p_uranio numeric = 0
+    analise_id integer, saudavel boolean
 ) AS $$
 BEGIN
-    INSERT INTO ParametrosAgua (
-        analise_id, aluminio, arsenio, bario, cadmio, cloro, cromo, fluor, virus, bacteria,
-        chumbo, nitrato, nitrito, mercurio, perclorato, radio, prata, uranio
-    ) VALUES (
-        analise_id, p_aluminio, p_arsenio, p_bario, p_cadmio, p_cloro, p_cromo, p_fluor, p_virus, p_bacteria,
-        p_chumbo, p_nitrato, p_nitrito, p_mercurio, p_perclorato, p_radio, p_prata, p_uranio
-    );
+    INSERT INTO ParametrosAgua VALUES(analise_id, saudavel);
 	
 	UPDATE Analises
 		SET Estagio = 4
@@ -368,11 +357,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE PROCEDURE finalizarAnaliseSolo(
-    analise_id integer, potassio numeric = 0, nitrogenio numeric = 0, fosforo numeric = 0
+    analise_id integer, cultura text, fertilizante text
 ) AS $$
 BEGIN
-    INSERT INTO ParametrosSolo (analise_id, potassio, nitrogenio, fosforo) 
-	VALUES (analise_id, potassio, nitrogenio, fosforo);
+    INSERT INTO ParametrosSolo (analise_id, cultura, fertilizante) 
+	VALUES (analise_id, cultura, fertilizante);
 	
 	UPDATE Analises
 		SET Estagio = 4

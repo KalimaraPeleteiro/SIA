@@ -27,6 +27,7 @@ const NovaAnalise = () => {
         } else if (analiseType === "solo") {
             tipo = 2;
         }
+
         const data = {
             "nomePersonalizado": nomePersonalizado,
             "tipo": tipo,

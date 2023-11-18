@@ -31,16 +31,6 @@ const EstacaoAtivar = () => {
                         {(inputProps) => <input {...inputProps} id="idAtivacao" className={styles.inputStyle}/>}
                     </InputMask>
                 </label>
-
-                <label className={styles.labelStyle}>
-                    <select name="culturaEstacao" className={styles.inputStyle}>
-                        {
-                            culturas.map(cultura => (
-                            <option key={cultura.id} value={cultura.id}>{cultura.Produto}</option>
-                            ))
-                        }
-                    </select>
-                </label>
                 
             </form>
                 <button className={styles.buttonStyle}>ATIVAR</button>
