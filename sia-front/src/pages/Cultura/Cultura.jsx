@@ -51,6 +51,8 @@ const Cultura = () => {
     navigate('/culturas')
   }
 
+console.log(cultureData.produto); 
+
 const produtoNaLista = LISTA_CULTURAS_ACEITAS_FAOSTAT.includes(cultureData.produto)
 
   return (
@@ -144,6 +146,7 @@ const produtoNaLista = LISTA_CULTURAS_ACEITAS_FAOSTAT.includes(cultureData.produ
         <div className={styles.containerDados}>
           <DadosCultura
             melhorEstacao = {cultureData.melhorEstacao}
+            produto = {cultureData.produto}
           />
         </div>
       ):

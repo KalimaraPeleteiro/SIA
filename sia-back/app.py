@@ -7,6 +7,7 @@ from fpdf import FPDF
 import json
 import aiohttp
 import random
+import re
 import smtplib
 
 
@@ -148,6 +149,56 @@ async def recomendar_analise_agua():
                 return resultado
             elif response.status == 400:
                 return "Erro de Colunas"
+
+
+async def recomendar_irrigacao_hoje(cultura):
+    rota = "http://127.0.0.1:5000/recomendacao/irrigacao/"
+
+    # Por enquanto, vou gerar dados aleatórios.
+    body = {
+        "Cultura": cultura,
+        "Dias Ativos (Cultura)": random.randint(1, 210),
+        "Umidade do Solo": random.uniform(120, 990),
+        "Temperatura": random.uniform(14, 39),
+        "Umidade do Ar": random.uniform(11, 85)
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(rota, data = json.dumps(body), headers = headers) as response:
+            if response.status == 200:
+                resultado = await response.json()
+                return resultado
+            elif response.status == 400:
+                return "Erro de Cultura"
+
+
+async def recomendar_pesticida_hoje():
+    rota = "http://127.0.0.1:5000/recomendacao/pesticida/"
+
+    # Por enquanto, vou gerar dados aleatórios.
+    body = {
+        "Quantidade de Insetos": random.randint(100, 4000),
+        "Uso de Pesticida": random.choice(["Nunca Usado Anteriormente", "Usado Anteriormente", "Usando Atualmente"]),
+        "Número de Doses Semanais": random.randint(5, 60),
+        "Número de Semanas de Uso": random.uniform(0, 30),
+        "Número de Semanas sem Uso": random.randint(0, 2)
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(rota, data = json.dumps(body), headers = headers) as response:
+            if response.status == 200:
+                resultado = await response.json()
+                return resultado
+            elif response.status == 400:
+                return "Erro de Cultura"
 
 
 def gerar_relatorio_pdf_solo(nomeAnalise):
@@ -452,6 +503,39 @@ async def dados_cultura(dados: dict):
     finally:
         await BANCO_DE_DADOS.disconnect()
 
+
+@app.post("/cultura_especifica/previsao/")
+async def previsao_safra_cultura_individual(dados: dict):
+    try:
+        await BANCO_DE_DADOS.connect()
+        resultado = await prever_safra(dados["produtoCultura"])
+
+        if resultado == "Erro de Cultura":
+            previsaoSafra = resultado
+        else:
+            number = re.search(r"[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?", resultado["Previsão"])
+            resultado = round(float(number.group())/10000, 2)
+            previsaoSafra = resultado
+        
+        irrigacao = await recomendar_irrigacao_hoje(dados["produtoCultura"])
+        if irrigacao == "Erro de Cultura":
+            recomendacaoIrrigacao = irrigacao
+        else:
+            recomendacaoIrrigacao = irrigacao["Recomendação"]
+        
+        
+        pesticida = await recomendar_pesticida_hoje()
+        recomendacaoPesticida = pesticida["Recomendação"]
+
+        return {"previsaoSafra": previsaoSafra,
+                "recomendacaoIrrigacao": recomendacaoIrrigacao,
+                "recomendacaoPesticida": recomendacaoPesticida}
+
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
 
 
 

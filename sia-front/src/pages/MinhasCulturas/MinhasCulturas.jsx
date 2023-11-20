@@ -11,8 +11,6 @@ const MinhasCulturas = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [culturesList, setCulturesList] = useState([]);
 
-
-
   const openModal = () => {
     setIsModalOpen(true);
   };
