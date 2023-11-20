@@ -7,7 +7,7 @@ const SummaryBox = (props) => {
     <>
       <div className={styles.box}>
         <div className={styles.items}>
-            <span className={styles.numberInfo}>0</span>
+            <span className={styles.numberInfo}>{props.number}</span>
             <p className={styles.textInfo}>{props.text}</p>
         </div>
       </div>  

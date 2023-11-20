@@ -301,6 +301,24 @@ async def lista_culturas_dashboard():
         await BANCO_DE_DADOS.disconnect()
 
 
+@app.get("/dashboard/detalhes/")
+async def retornar_detalhes_dashboard():
+    try:
+        await BANCO_DE_DADOS.connect()
+        busca_culturas = "SELECT COUNT(id) AS numeroCulturasAtivas FROM Culturas WHERE dataInicio IS NOT null;"
+        busca_analises = "SELECT COUNT(id) AS numeroAnalisesPendentes FROM Analises WHERE estagio != 4;"
+
+        resultado_culturas = await BANCO_DE_DADOS.fetch_one(busca_culturas)    
+        resultado_analises = await BANCO_DE_DADOS.fetch_one(busca_analises)
+
+        return {"numeroCulturasAtivas": resultado_culturas["numeroculturasativas"], 
+                "numeroAnalisesPendentes": resultado_analises["numeroanalisespendentes"]}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+
 
 
 

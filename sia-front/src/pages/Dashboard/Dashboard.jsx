@@ -9,6 +9,7 @@ import axios from "axios";
 
 const Dashboard = () => {
   const [culturas, setCulturas] = useState([]);
+  const [dadosDashboard, setDadosDashboard] = useState([]);
   const navigate = useNavigate();
 
   const fetchCulturas = async () => {
@@ -21,9 +22,26 @@ const Dashboard = () => {
     }
   };
 
+  const fetchDados = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/dashboard/detalhes/");
+      setDadosDashboard(response.data);
+      console.log("Dados da API:", response.data);
+    } catch (error) {
+      console.error("Erro ao buscar as dados da dashboard:", error);
+    }
+  };
+
   useEffect(() => {
-    fetchCulturas(); // Chamando a função quando o componente for montado
-  }, []);
+    fetchCulturas(); // Chamando a função fetchCulturas quando o componente for montado
+   
+    const timer = setTimeout(() => {
+      fetchDados(); // Chamando a função fetchDados 1 segundo após fetchCulturas
+    }, 100); // 1000 milissegundos = 1 segundo
+   
+    // Limpeza do efeito
+    return () => clearTimeout(timer);
+   }, []);
 
   const handleShowRelatorio = () => {
     navigate("/relatorio");
@@ -33,10 +51,10 @@ const Dashboard = () => {
       <Header textHeader={"Um painel geral a respeito de nossos serviços e suas atividades."} />
       <h1 className={styles.titleTop}>Visão geral</h1>
       <div className={styles.summaryBoxContainer}>
-        <SummaryBox text={`Culturas Ativas`}/>
-        <SummaryBox text={"Análises pendentes"}/>
-        <SummaryBox text={"Quilos Estimados para Colheita"}/>
-        <SummaryBox text={"Pestes Detectadas por m²"}/>
+        <SummaryBox text={`Culturas Ativas`} number = {dadosDashboard.numeroCulturasAtivas}/>
+        <SummaryBox text={"Análises pendentes"} number = {dadosDashboard.numeroAnalisesPendentes}/>
+        <SummaryBox text={"Quilos Estimados para Colheita"} number = {0}/>
+        <SummaryBox text={"Pestes Detectadas por m²"} number = {0}/>
       </div>
 
       <div className={styles.buttonContainer}>
