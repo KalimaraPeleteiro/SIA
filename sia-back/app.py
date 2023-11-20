@@ -12,7 +12,7 @@ import smtplib
 
 
 # Preparando o Banco
-URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA-Teste"
+URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA"
 EMAIL_SIA = "sia.agroconnect@outlook.com"
 SENHA_SIA = "@groetech1234"
 BANCO_DE_DADOS = Database(URL_BANCO)
