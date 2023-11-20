@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from databases import Database
@@ -12,7 +12,7 @@ import smtplib
 
 
 # Preparando o Banco
-URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA"
+URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA-Teste"
 EMAIL_SIA = "sia.agroconnect@outlook.com"
 SENHA_SIA = "@groetech1234"
 BANCO_DE_DADOS = Database(URL_BANCO)
@@ -33,6 +33,14 @@ app.add_middleware(
 
 
 # =================== FUNÇÕES ===================
+async def get_db_connection():
+    await BANCO_DE_DADOS.connect()
+    try:
+        yield BANCO_DE_DADOS
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+
+
 async def prever_safra(cultura):
     rota = "http://127.0.0.1:5000/previsao/safra/"
 
@@ -331,11 +339,10 @@ async def gerar_relatorio_pdf_agua_historico(idAnalise):
 
 # Retorna lista de culturas que aparece na dashboard.
 @app.get("/dashboard/lista/")
-async def lista_culturas_dashboard():
+async def lista_culturas_dashboard(db: BANCO_DE_DADOS = Depends(get_db_connection)):
     try:
-        await BANCO_DE_DADOS.connect()
         busca = "SELECT * FROM retornarTodasCulturasUsuarioDashboard('reidogado@agro.com.br');"
-        resultado = await BANCO_DE_DADOS.fetch_all(busca)
+        resultado = await db.fetch_all(busca)
 
         culturas = list()
         for cultura in resultado:
@@ -348,8 +355,6 @@ async def lista_culturas_dashboard():
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        await BANCO_DE_DADOS.disconnect()
 
 
 @app.get("/dashboard/detalhes/")

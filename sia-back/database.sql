@@ -123,6 +123,7 @@ CREATE TABLE Lavouras(
 CREATE TABLE Culturas(
 	id serial PRIMARY KEY,
 	nomePersonalizado text NOT NULL,
+	dataCriacao timestamp DEFAULT NOW(),
 	dataInicio timestamp,
 	produto integer NOT NULL,
 	
@@ -442,7 +443,7 @@ CALL novoTipoEstacao('Pro');
 
 CALL novaEstacao('Estação do Rei', 3, 1);
 
-CALL adicionarEstacaoAoUsuario(1, 1)
+CALL adicionarEstacaoAoUsuario(1, 1);
 
 CALL novoDrone('Drone do Rei', 1);
 
