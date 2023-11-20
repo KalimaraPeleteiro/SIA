@@ -3,7 +3,7 @@
 import styles from './DroneComponent.module.css';
 
 
-const DroneComponent = ({nome, cultureName}) => {
+const DroneComponent = ({nome, cultureName, ativo}) => {
    
     return (
         <div className={styles.containerEstacaoComponent}>
@@ -12,7 +12,12 @@ const DroneComponent = ({nome, cultureName}) => {
             </header>
 
             <div className={styles.infoEstacaoContainer}>
-                <p>Cultura {cultureName}</p>
+                <p>{cultureName}</p>
+                {ativo ? (
+                    <p>Drone Ativo</p>
+                ) : (
+                    <p>Drone Ainda não Ativado</p>
+                )}
             </div>
         </div>
     )

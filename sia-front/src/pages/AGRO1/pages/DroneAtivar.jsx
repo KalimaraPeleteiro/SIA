@@ -1,19 +1,49 @@
-import { useState } from "react";
 import Header from "../../../components/Header"
 import styles from "./DroneAtivar.module.css"
 import InputMask from 'react-input-mask';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const DroneAtivar = () => {
-    const [culturas] = useState([]);
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const voltarPaginaPestes = () => {
+        navigate('/controlePestes')
+      }
+
+      const handleSubmit = async (e) => {
         e.preventDefault();
-    }
+
+        const chave = document.getElementById('idAtivacao').value;
+
+        const data = {
+            "chave": chave
+        }
+
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/pestes/ativar/', data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.status === 200) {
+                toast.success('Drone ativado com sucesso!');
+                setTimeout(voltarPaginaPestes, 3000);
+            } else {
+                toast.error('Falha ao ativar o drone. Tente novamente.');
+            }
+        } catch (error) {
+            toast.error('Erro ao ativar o drone. Tente novamente.');
+        }
     
+        }
 
   return (
     <>
+        <ToastContainer/>
         <Header textHeader={"Livre-se dos miseráveis que comprometem a sua lavroura."} />
 
         <h1 className={styles.h1Main}>Ativar Drone</h1>
@@ -27,23 +57,12 @@ const DroneAtivar = () => {
 
             <form onSubmit={handleSubmit} className={styles.formStyle}>
                 <label className={styles.labelStyle}>
-                    <InputMask  placeholder="XX-XXXXX_XXXX">
+                    <InputMask  placeholder="XXXXXXXXXXX">
                         {(inputProps) => <input {...inputProps} id="idAtivacao" className={styles.inputStyle}/>}
                     </InputMask>
                 </label>
-
-                <label className={styles.labelStyle}>
-                    <select name="culturaEstacao" className={styles.inputStyle}>
-                        {
-                            culturas.map(cultura => (
-                            <option key={cultura.id} value={cultura.id}>{cultura.Produto}</option>
-                            ))
-                        }
-                    </select>
-                </label>
-                
             </form>
-                <button className={styles.buttonStyle}>ATIVAR</button>
+                <button className={styles.buttonStyle} onClick={handleSubmit}>ATIVAR</button>
         </div>
 
     </>

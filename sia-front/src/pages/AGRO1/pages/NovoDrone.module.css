@@ -1,6 +1,8 @@
 .h1Main {
     margin-left: 6rem;
     margin-top: 1rem;
+    font-family: var(--poppins);
+    font-weight: 400;
 }
 
 

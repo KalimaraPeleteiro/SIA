@@ -3,15 +3,35 @@ import styles from "./AgroOne.module.css"
 import droneAtivar from "./images/droneAtivar.png";
 import droneImage from "./images/drone.png";
 import saibaMais from "./images/saibaMais.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DroneComponent from "./components/DroneComponent";
+import axios from "axios";
 
 
 
 const AgroOne = () => {
   const navigate = useNavigate();
-  const [drones] = useState([]);
+  const [drones, setDrones] = useState([]);
+
+  const fetchDrones = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/pestes/lista/");
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar os drones: " + error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const assignData = async () => {
+      const data = await fetchDrones();
+      setDrones(data.Drones || []);
+    };
+
+    assignData();
+  }, []);
 
   const handleChangePageSaibaMais = () => {
     window.open(`/controlePestes/saibaMais`, '_blank');
@@ -72,7 +92,7 @@ const AgroOne = () => {
             
             <div>
                 {drones.length ? (
-                    drones.map(drone => <DroneComponent key={drone.id}  nome = "Nome Personalziado" cultureName="XX" />)
+                    drones.map(drone => <DroneComponent key={drone.nomeDrone}  nome = {drone.nomeDrone} cultureName={drone.culturaLigada} ativo = {drone.ativo}/>)
                 ) : 
                 (
                     <div className={styles.emptyList}>

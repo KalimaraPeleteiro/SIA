@@ -29,6 +29,9 @@ const NovaEstacao = () => {
     const fetchData = async () => {
       const data = await fetchCulturas();
       setCulturas(data.Culturas || []);
+      if (data.Culturas && data.Culturas.length === 1) {
+        setCulturaLigada(data.Culturas[0].nomePersonalizado)
+      }
     };
 
     fetchData();
@@ -113,7 +116,7 @@ const NovaEstacao = () => {
                 <label className={styles.labelStyle}>
                     <select name="culturaEstacao" className={styles.inputStyle} onChange={(e) => setCulturaLigada(e.target.value)}>
                         {
-                            culturas.map(cultura => (
+                            culturas.map(cultura => (   
                             <option key={cultura.nomePersonalizado} value={cultura.nomePersonalizado}>{cultura.nomePersonalizado}</option>
                             ))
                         }

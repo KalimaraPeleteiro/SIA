@@ -172,6 +172,7 @@ CREATE TABLE Drones(
 	nomePersonalizado text,
 	cultura_id integer,
 	chave varchar(11) UNIQUE NOT NULL DEFAULT gerarChaveAleatoria(11),
+	ativo boolean DEFAULT false,
 	
 	FOREIGN KEY (cultura_id) REFERENCES Culturas(id)
 );

@@ -54,7 +54,7 @@ const Dashboard = () => {
         <SummaryBox text={`Culturas Ativas`} number = {dadosDashboard.numeroCulturasAtivas}/>
         <SummaryBox text={"Análises pendentes"} number = {dadosDashboard.numeroAnalisesPendentes}/>
         <SummaryBox text={"Quilos Estimados para Colheita"} number = {0}/>
-        <SummaryBox text={"Pestes Detectadas por m²"} number = {0}/>
+        <SummaryBox text={"Pestes Detectadas por m²"} number = {dadosDashboard.numeroInsetos}/>
       </div>
 
       <div className={styles.buttonContainer}>

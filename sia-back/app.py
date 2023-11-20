@@ -363,12 +363,15 @@ async def retornar_detalhes_dashboard():
         await BANCO_DE_DADOS.connect()
         busca_culturas = "SELECT COUNT(id) AS numeroCulturasAtivas FROM Culturas WHERE dataInicio IS NOT null;"
         busca_analises = "SELECT COUNT(id) AS numeroAnalisesPendentes FROM Analises WHERE estagio != 4;"
+        busca_pestes = "SELECT COUNT(id) AS numeroDronesAtivos FROM Drones WHERE ativo is True;"
 
         resultado_culturas = await BANCO_DE_DADOS.fetch_one(busca_culturas)    
         resultado_analises = await BANCO_DE_DADOS.fetch_one(busca_analises)
+        resultado_pestes = await BANCO_DE_DADOS.fetch_one(busca_pestes)
 
         return {"numeroCulturasAtivas": resultado_culturas["numeroculturasativas"], 
-                "numeroAnalisesPendentes": resultado_analises["numeroanalisespendentes"]}
+                "numeroAnalisesPendentes": resultado_analises["numeroanalisespendentes"],
+                "numeroInsetos": round(resultado_pestes["numerodronesativos"] * random.randint(100, 4000) / 1000, 2)}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -782,6 +785,7 @@ async def lista_culturas_sem_estacao():
 
 @app.post("/estacoes/nova-estacao/")
 async def lista_culturas_sem_estacao(dados: dict):
+    SERVIDOR_EMAIL = None
     try:
         await BANCO_DE_DADOS.connect()
 
@@ -810,7 +814,8 @@ async def lista_culturas_sem_estacao(dados: dict):
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         await BANCO_DE_DADOS.disconnect()
-        SERVIDOR_EMAIL.quit()
+        if SERVIDOR_EMAIL is not None:
+            SERVIDOR_EMAIL.quit()
 
 
 @app.post("/estacoes/ativar/")
@@ -831,6 +836,115 @@ async def ativar_estacao(dados: dict):
     finally:
         await BANCO_DE_DADOS.disconnect()
 
+
+
+
+
+
+
+
+
+# ------------------------------------------ DRONES ------------------------------------------
+@app.get("/pestes/lista/")
+async def lista_drones():
+    try:
+        await BANCO_DE_DADOS.connect()
+        busca = """SELECT Drones.nomePersonalizado AS Drone, Culturas.nomePersonalizado AS Cultura, Drones.ativo FROM Drones
+                   LEFT JOIN Culturas ON Drones.cultura_id = Culturas.id;"""
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
+
+        drones = list()
+
+        for drone in resultado:
+            drones.append({"nomeDrone": drone["drone"],
+                           "culturaLigada": drone["cultura"],
+                           "ativo": drone["ativo"]})
+        
+        return {"Drones": drones}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+
+
+@app.get("/pestes/lista/culturas/")
+async def lista_culturas_sem_drone():
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        busca = """SELECT Culturas.nomePersonalizado 
+                   FROM Culturas
+                   LEFT JOIN Drones ON Drones.cultura_id = Culturas.id
+                   WHERE Drones.cultura_id IS NULL;"""
+        
+        resultado = await BANCO_DE_DADOS.fetch_all(busca)
+
+        culturas = list()
+        
+        for cultura in resultado:
+            culturas.append({"nomePersonalizado": cultura["nomepersonalizado"]})
+        
+        return {"Culturas": culturas}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+
+
+@app.post("/pestes/novo-drone/")
+async def novo_drone(dados: dict):
+    SERVIDOR_EMAIL = None
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        # Agora, vamos buscar pelo seu ID e ligá-la ao Usuário
+        busca = f"SELECT * FROM obterIdCultura('{dados['nomeCultura']}')"
+        resposta = await BANCO_DE_DADOS.fetch_one(busca)
+
+        comando = f"CALL novoDrone('{dados['nomePersonalizado']}', {resposta['obteridcultura']})"
+        await BANCO_DE_DADOS.execute(comando)
+
+        busca_estacao = f"SELECT Drones.chave FROM Drones WHERE Drones.nomePersonalizado = '{dados['nomePersonalizado']}';"
+        resposta_busca = await BANCO_DE_DADOS.fetch_one(busca_estacao)
+
+        SERVIDOR_EMAIL = smtplib.SMTP('smtp-mail.outlook.com', 587)
+        SERVIDOR_EMAIL.starttls()
+        SERVIDOR_EMAIL.login(EMAIL_SIA, SENHA_SIA)
+
+        texto = f"Subject: Compra do Drone '{dados['nomePersonalizado']}'\n\nOlá, parabéns por adquirir uma nova instância do grandiosíssimo AGRO-1!. Em breve, funcionários da AgroConnect irão até você para entregar o produto e configurá-lo. Uma vez concluído o processo, lembre-se de ativar o seu novo drone! Para isso, use a chave '{resposta_busca['chave']}'!".encode('utf-8')
+
+        SERVIDOR_EMAIL.sendmail(EMAIL_SIA, "kalimarapeleteiro@gmail.com", texto)
+
+        return JSONResponse(content={"Mensagem": "Post Bem-Sucedido"}, status_code=200)
+    
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+        if SERVIDOR_EMAIL is not None:
+            SERVIDOR_EMAIL.quit()
+
+
+@app.post("/pestes/ativar/")
+async def ativar_estacao(dados: dict):
+    try:
+        await BANCO_DE_DADOS.connect()
+
+        comando = f"""UPDATE Drones
+                      SET ativo = true
+                      WHERE chave = '{dados['chave']}' AND ativo = false;"""
+        await BANCO_DE_DADOS.execute(comando)
+
+        return JSONResponse(content={"Mensagem": "Drone Ativo"}, status_code=200)
+    
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
 
 
 
