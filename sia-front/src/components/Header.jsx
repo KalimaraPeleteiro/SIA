@@ -6,6 +6,7 @@ import styles from "./Header.module.css"
 const Header = ({textHeader}) => {
   return (
     <>
+
         <header className={styles.header}>
             <img src="/logoSIA.png" alt="logo" className={styles.logo}/>
             <nav>

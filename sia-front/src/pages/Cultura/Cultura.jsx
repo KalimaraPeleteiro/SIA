@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import styles from './Cultura.module.css';
 import { useNavigate } from "react-router-dom";
 import InfoCultura from './components/InfoCultura';
@@ -16,6 +16,36 @@ const Cultura = () => {
                                           "Açafrão", "Soja", "Girassol", "Feijião", "Ervilha", "Batata",
                                           "Beterraba", "Cana-de-Açúcar", "Couve", "Cebola", "Pimenta",
                                           "Tomate", "Melancia"];
+                                          
+  const traducoesCulturas = {
+    "Tabaco": "tobacco",
+    "Milho": "corn",
+    "Sorgo": "sorghum",
+    "Trigo": "wheat",
+    "Algodão": "cotton",
+    "Alfafa": "alfalfa",
+    "Banana": "banana",
+    "Laranja": "orange",
+    "Uva": "grape",
+    "Abacaxi": "pineapple",
+    "Amendoim": "peanut",
+    "Azeitona": "olive",
+    "Açafrão": "saffron",
+    "Soja": "soybean",
+    "Girassol": "sunflower",
+    "Feijião": "bean",
+    "Ervilha": "pea",
+    "Batata": "potato",
+    "Beterraba": "beetroot",
+    "Cana-de-Açúcar": "sugarcane",
+    "Couve": "cabbage",
+    "Cebola": "onion",
+    "Pimenta": "pepper",
+    "Tomate": "tomato",
+    "Melancia": "watermelon"
+  };
+
+ 
   const navigate = useNavigate();
   const { cultureName } = useParams();
   const [cultureData, setCultureData] = useState([]);
@@ -54,6 +84,7 @@ const Cultura = () => {
 console.log(cultureData.produto); 
 
 const produtoNaLista = LISTA_CULTURAS_ACEITAS_FAOSTAT.includes(cultureData.produto)
+
 
   return (
     <>
@@ -124,10 +155,10 @@ const produtoNaLista = LISTA_CULTURAS_ACEITAS_FAOSTAT.includes(cultureData.produ
       )}
 
       {produtoNaLista ? (
-        <ScrapCultura/>
+         <ScrapCultura nameCultura={traducoesCulturas[cultureData.produto]} />
 
       ): (
-        <p></p>
+        <p>Não oferecemos suporte a essa cultura</p>
       )}
 
       

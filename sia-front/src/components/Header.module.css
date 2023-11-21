@@ -88,13 +88,50 @@ a:hover {
     }
 
     .item {
-        gap: 1.6remrem;
+        gap: 1.6rem;
     }
 
     .header nav {
         gap: 1.4rem;
         margin-left: 5rem;
         margin-right: 1rem;
+    }
+
+}
+
+@media (max-width: 1900px) {
+    .logo {
+        width: 4.74306rem;
+        height: 2.95rem;
+        margin-left: 2rem;
+    }
+
+    .textDescription {
+        font-size: 1.1rem;
+        margin-left: 2rem;
+    }
+
+    .item img {
+        width: 2.5rem;
+        height: 3rem;
+    }
+
+    .item a {
+        font-size: 2rem;
+    }
+
+    .itensGroup {
+        gap: 2rem;
+    }
+
+    .item {
+        gap: 1.6rem;
+    }
+
+    .header nav {
+        gap: 1.4rem;
+        margin-left: 1rem;
+        margin-right: 5rem;
     }
 
 }

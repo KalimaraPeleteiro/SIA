@@ -95,3 +95,28 @@
         margin-left: 2rem;
     }
 }
+
+@media (max-width: 1900px) {
+    .analiseEncomendaContainer {
+        display: flex;
+        gap: 15rem;
+        margin-left: 6rem;
+        margin-top: 4rem;
+    }
+
+    .textAnaliseEncomenda {
+        width: 24.5rem;
+        height: 5.375rem;
+        font-size: 1rem;    
+    }
+
+    .buttonAnaliseEncomenda {
+        width: 24rem;
+        height: 2.875rem;
+    }
+
+    .analisesEncomendadasContainer {
+        margin-top: 4rem;
+        margin-left: 6rem;
+    }
+}

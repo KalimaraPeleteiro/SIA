@@ -9,10 +9,12 @@ import aiohttp
 import random
 import re
 import smtplib
+from bs4 import BeautifulSoup
+import requests
 
 
 # Preparando o Banco
-URL_BANCO = "postgresql://kalimara:hitman@localhost/SIA"
+URL_BANCO = "postgresql://postgres:batata123@localhost/SIA"
 EMAIL_SIA = "sia.agroconnect@outlook.com"
 SENHA_SIA = "@groetech1234"
 BANCO_DE_DADOS = Database(URL_BANCO)
@@ -545,6 +547,35 @@ async def previsao_safra_cultura_individual(dados: dict):
     finally:
         await BANCO_DE_DADOS.disconnect()
 
+
+
+@app.get('/cultura_especifica/scraping/{cultura}') 
+async def scrape_fao(cultura: str):
+    base_url = 'https://www.fao.org/land-water/databases-and-software/crop-information/'
+    cultura_url = base_url + cultura + '/en/'
+    response = requests.get(cultura_url)
+
+    try:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        description_cultura = soup.find_all('p', class_='bodytext')
+        
+        # Extrai apenas o texto dos parágrafos encontrados
+        textos_cultura = [p.get_text() for p in description_cultura[:6]]
+
+       # extrair imagem url
+        image_cultura = soup.find_all('p', class_='bodytext')
+        img_url = None
+        for p in image_cultura:
+            img_tag = p.find('img')
+            if img_tag and img_tag.has_attr('src'):
+                img_url = img_tag['src']
+                break
+
+        
+    
+        return {"description_cultura": textos_cultura, "img_url": img_url}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 

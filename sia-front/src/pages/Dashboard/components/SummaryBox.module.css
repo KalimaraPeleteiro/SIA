@@ -39,6 +39,30 @@
     }
 
     .items {
+        gap: 2rem;
+    }
+
+    .numberInfo {
+        font-size: 4rem;
+    }
+
+    .textInfo {
+        font-size: 1rem;
+        margin-right: 1rem;
+        font-weight: 300;
+        color: #000;
+
+    }
+}
+
+@media (max-width: 1900px) {
+
+    .box {
+        width: 20rem;
+        height: 6rem;
+    }
+
+    .items {
         gap: 3rem;
     }
 

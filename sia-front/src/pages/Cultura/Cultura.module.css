@@ -97,3 +97,13 @@
     gap: 2rem;
   }
 }
+
+@media (max-width: 1900px) {
+  .headerCultura {
+    gap: 30rem;
+  }
+
+  .containerInfosCulturas {
+    gap: 2rem;
+  }
+}

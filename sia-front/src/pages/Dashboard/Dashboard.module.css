@@ -95,3 +95,18 @@
     }
 
 }
+
+@media (max-width: 1900px) {
+    .titleTop {
+        margin-left: 2rem;
+    }
+    .titleList {
+        margin-top: 3rem;
+        margin-left: 2rem;
+        font-size: 1.8rem;
+    }
+    .buttonContainer {
+        margin-top: 3rem;
+        margin-left: 6rem;
+    }
+  }

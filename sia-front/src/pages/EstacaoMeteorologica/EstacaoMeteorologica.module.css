@@ -8,6 +8,8 @@
 .estacaoBox {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 2rem;
 }
 
@@ -93,5 +95,37 @@
     .estacoesEncomendadasContainer {
         margin-top: 4rem;
         margin-left: 2rem;
+    }
+}
+
+@media (max-width: 1900px) {
+    .estacaoContainer {
+        display: flex;
+        gap: 15rem;
+        margin-left: 4rem;
+        margin-top: 4rem;
+    }
+
+    .headerEstacaoBox {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        justify-content: center;
+    }
+
+    .textEstacaoBox {
+        width: 24.5rem;
+        height: 5.375rem;
+        font-size: 1rem;
+    }
+
+    .buttonEstacaoBox {
+        width: 24rem;
+        height: 2.875rem;
+    }
+
+    .estacoesEncomendadasContainer {
+        margin-top: 4rem;
+        margin-left: 3.4rem;
     }
 }
