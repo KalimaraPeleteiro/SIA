@@ -32,6 +32,7 @@ const Dashboard = () => {
     }
   };
 
+
   useEffect(() => {
     fetchCulturas(); // Chamando a função fetchCulturas quando o componente for montado
    
@@ -53,7 +54,7 @@ const Dashboard = () => {
       <div className={styles.summaryBoxContainer}>
         <SummaryBox text={`Culturas Ativas`} number = {dadosDashboard.numeroCulturasAtivas}/>
         <SummaryBox text={"Análises pendentes"} number = {dadosDashboard.numeroAnalisesPendentes}/>
-        <SummaryBox text={"Quilos Estimados para Colheita"} number = {0}/>
+        <SummaryBox text={"Quilos Estimados para Colheita kg por m²"} number = {dadosDashboard.previsaoSafra}/>
         <SummaryBox text={"Pestes Detectadas por m²"} number = {dadosDashboard.numeroInsetos}/>
       </div>
 

@@ -158,7 +158,7 @@ const produtoNaLista = LISTA_CULTURAS_ACEITAS_FAOSTAT.includes(cultureData.produ
          <ScrapCultura nameCultura={traducoesCulturas[cultureData.produto]} />
 
       ): (
-        <p>Não oferecemos suporte a essa cultura</p>
+        <p></p>
       )}
 
       

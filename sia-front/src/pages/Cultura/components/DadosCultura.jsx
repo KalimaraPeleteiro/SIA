@@ -10,6 +10,7 @@ import nao from './images/nao.png';
 import talvez from './images/talvez.png'
 
 
+// eslint-disable-next-line react/prop-types, no-unused-vars
 const DadosCultura = ({melhorEstacao, produto}) => {
 
     const[dadosMachineLearning, setDadosMachineLearning] = useState([]);

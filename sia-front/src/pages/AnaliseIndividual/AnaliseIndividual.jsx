@@ -46,6 +46,7 @@ const AnaliseIndividual = () => {
       fetchData();
     }, [analiseId]);
 
+
     useEffect(() => {
       if (success) {
         setTimeout(voltarPaginaAnalises, 5000);
@@ -158,11 +159,32 @@ const AnaliseIndividual = () => {
     }
  };
 
+ async function obterEstagioAnalise(analiseId) {
+  const response = await axios.get(`http://127.0.0.1:8000/analise/${analiseId}/estagio`);
+  return response.data.estagio;
+}
+
+async function mudarEstagioAnalise(analiseId) {
+  const estagioAtual = await obterEstagioAnalise(analiseId);
+  let novoEstagio;
+  if (estagioAtual === 1) {
+      novoEstagio = 2;
+  } else if (estagioAtual === 2) {
+      novoEstagio = 3;
+  } else {
+    novoEstagio = 4;
+  }
+  const response = await axios.post('http://127.0.0.1:8000/analise/mudar_estagio', {
+      analise_id: analiseId,
+      novoEstagio: novoEstagio
+  });
+  console.log(response.data);
+
+}
+
    const voltarPaginaAnalises = () => {
     navigate('/analises')
   }
-
-
 
     console.log(analiseData)
   
@@ -301,6 +323,8 @@ const AnaliseIndividual = () => {
           <p></p>
         )
         }
+
+      <button onClick={() => mudarEstagioAnalise(analiseId)} className={styles.mudarEstagioAnalise}>Mudar Estágio</button>
 
       </>
     )

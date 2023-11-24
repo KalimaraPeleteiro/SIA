@@ -366,21 +366,33 @@ async def retornar_detalhes_dashboard():
         busca_culturas = "SELECT COUNT(id) AS numeroCulturasAtivas FROM Culturas WHERE dataInicio IS NOT null;"
         busca_analises = "SELECT COUNT(id) AS numeroAnalisesPendentes FROM Analises WHERE estagio != 4;"
         busca_pestes = "SELECT COUNT(id) AS numeroDronesAtivos FROM Drones WHERE ativo is True;"
+        busca_culturas_previsao = "SELECT * FROM retornarListaCulturasDetalhesPrever('reidogado@agro.com.br')"
+
+
 
         resultado_culturas = await BANCO_DE_DADOS.fetch_one(busca_culturas)    
         resultado_analises = await BANCO_DE_DADOS.fetch_one(busca_analises)
         resultado_pestes = await BANCO_DE_DADOS.fetch_one(busca_pestes)
+        resultado_culturas_previsao = await BANCO_DE_DADOS.fetch_all(busca_culturas_previsao)
 
+        total_kilos_estimados = 0
+        for cultura in resultado_culturas_previsao:
+            previsao = await prever_safra(cultura['produtocultura'])
+            if previsao != "Erro de Cultura":
+                number = re.search(r"[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?", previsao["Previsão"])
+                total_kilos_estimados += round(float(number.group())/10000, 2)
+
+        print(total_kilos_estimados)
         return {"numeroCulturasAtivas": resultado_culturas["numeroculturasativas"], 
                 "numeroAnalisesPendentes": resultado_analises["numeroanalisespendentes"],
-                "numeroInsetos": round(resultado_pestes["numerodronesativos"] * random.randint(100, 4000) / 1000, 2)}
+                "numeroInsetos": round(resultado_pestes["numerodronesativos"] * random.randint(100, 4000) / 1000, 2),
+                "previsaoSafra": total_kilos_estimados
+                }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         await BANCO_DE_DADOS.disconnect()
-
-
 
 
 
@@ -663,6 +675,8 @@ async def criar_nova_analise(dados:dict):
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         await BANCO_DE_DADOS.disconnect()
+    
+
 
 
 # Chamada quando o botão "Baixar Relatório" é pressionado.
@@ -752,10 +766,30 @@ async def criar_relatorio_agua(dados: dict):
 
     return FileResponse("relatório.pdf", media_type="application/pdf", filename="relatório.pdf")
 
+@app.post("/analise/mudar_estagio")
+async def mudar_estagio_analise(dados: dict):
+    try :
+        await BANCO_DE_DADOS.connect()
+        busca = f"CALL mudarEstagioAnalise({dados['analise_id']}, {dados['novoEstagio']});"
+        await BANCO_DE_DADOS.execute(busca)
 
-
-
-
+        return {"message: ": "Estágio alterado com sucesso!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
+    
+@app.get("/analise/{analise_id}/estagio")
+async def obter_estagio_analise(analise_id: int):
+    try:
+        await BANCO_DE_DADOS.connect()
+        query = f"SELECT estagio FROM Analises WHERE id = {analise_id};"
+        resultado = await BANCO_DE_DADOS.fetch_one(query)
+        return {"estagio": resultado["estagio"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        await BANCO_DE_DADOS.disconnect()
 
 
 
@@ -985,3 +1019,4 @@ if __name__ == "__main__":
     
     # Adicionar o host = '0.0.0.0' após produção. Remover o reload.
     uvicorn.run("app:app", port=8000, reload=True)  
+   
