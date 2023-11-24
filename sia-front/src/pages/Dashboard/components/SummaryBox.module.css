@@ -1,4 +1,6 @@
 .box {
+    display: flex;
+    justify-content: center;
     width: 24rem;
     height: 7rem;
     border-radius: 1.25rem;
@@ -59,7 +61,7 @@
 
     .box {
         width: 25rem;
-        height: 6rem;
+        height: 8rem;
     }
 
     .items {

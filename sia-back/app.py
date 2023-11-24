@@ -377,10 +377,11 @@ async def retornar_detalhes_dashboard():
 
         total_kilos_estimados = 0
         for cultura in resultado_culturas_previsao:
+            print("Previsão para a cultura:", cultura['produtocultura'])
             previsao = await prever_safra(cultura['produtocultura'])
             if previsao != "Erro de Cultura":
                 number = re.search(r"[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?", previsao["Previsão"])
-                total_kilos_estimados += round(float(number.group())/10000, 2)
+                total_kilos_estimados += round(float(number.group()), 2)
 
         print(total_kilos_estimados)
         return {"numeroCulturasAtivas": resultado_culturas["numeroculturasativas"], 
