@@ -2,8 +2,16 @@
 import { useEffect, useState } from 'react';
 import styles from './ScrapCultura.module.css';
 import axios from "axios";
-
-
+import imgTobacco from './images/imagesScrap/tobacco.gif';
+import imgPotato from './images/imagesScrap/potato.gif';
+import imgBanana from './images/imagesScrap/banana.gif';
+import imgWheat from './images/imagesScrap/wheat.gif';
+import imgSoybean from './images/imagesScrap/soybean.gif';
+import imgSugarCane from './images/imagesScrap/sugarcane.gif';
+import imgPineapple from './images/imagesScrap/pineapple.gif';
+import imgCotton from './images/imagesScrap/cotton.gif';
+import imgSorghum from './images/imagesScrap/sorghum.jpg';
+import imgMaize from './images/imagesScrap/maize.gif';
 
 
 const ScrapCultura = ({nameCultura}) => {
@@ -11,6 +19,45 @@ const ScrapCultura = ({nameCultura}) => {
     description_cultura: [],
     img_url: ''
   });
+
+ let imgSrc;
+
+ switch (nameCultura) {
+  case 'tobacco':
+    imgSrc = imgTobacco;
+    break;
+  case 'potato':
+    imgSrc = imgPotato;
+    break;
+  case 'banana': 
+    imgSrc = imgBanana;
+    break;
+  case 'wheat':
+    imgSrc = imgWheat;
+    break;
+  case 'soybean':
+    imgSrc = imgSoybean;
+    break;
+  case 'sugarcane':
+    imgSrc = imgSugarCane;
+    break;
+  case 'pineapple':
+    imgSrc = imgPineapple;
+    break;
+  case 'cotton':
+    imgSrc = imgCotton;
+    break;
+  case 'sorghum':
+    imgSrc = imgSorghum;
+    break;
+  case 'maize':
+    imgSrc = imgMaize;
+    break;
+  default:
+    imgSrc = '';
+    break;
+ }
+
 
  
   useEffect(() => {
@@ -37,7 +84,7 @@ const ScrapCultura = ({nameCultura}) => {
               ))}
             </div>
 
-            <img src={scrapedText.img_url} alt="Imagem" className={styles.scrapedImage} />
+            <img src={imgSrc} alt="Imagem" className={styles.scrapedImage} />
         </div>
 
     </>

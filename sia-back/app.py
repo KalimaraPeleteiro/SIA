@@ -11,6 +11,7 @@ import re
 import smtplib
 from bs4 import BeautifulSoup
 import requests
+from googletrans import Translator
 
 
 # Preparando o Banco
@@ -502,10 +503,11 @@ async def dados_cultura(dados: dict):
         data_formatada = f"{data_formatada.day:02d}/{data_formatada.month:02d}/{data_formatada.year}"
 
         if segundo_resultado["datainicio"] is not None:
-            data_formatada_inicio = datetime.fromisoformat(str(segundo_resultado["datacriacao"]))
+            data_formatada_inicio = datetime.fromisoformat(str(segundo_resultado["datainicio"]))
             data_formatada_inicio = f"{data_formatada_inicio.day:02d}/{data_formatada_inicio.month:02d}/{data_formatada_inicio.year}"
         else:
             data_formatada_inicio = None
+                    
 
         resposta = {
             "produto": segundo_resultado["produto"],
@@ -525,6 +527,28 @@ async def dados_cultura(dados: dict):
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         await BANCO_DE_DADOS.disconnect()
+
+@app.put("/cultura_especifica/iniciar/")
+async def iniciar_cultura(dados: dict):
+ try:
+    print("Received request") # Add log statement
+    await BANCO_DE_DADOS.connect()
+    busca = f"SELECT * FROM obterIdCultura('{dados['nomeCultura']}')"
+    resultado = await BANCO_DE_DADOS.fetch_one(busca)
+   
+    atualizacao = f"CALL ativarCultura({resultado['obteridcultura']})"
+    print("Executing stored procedure") # Add log statement
+    await BANCO_DE_DADOS.execute(atualizacao)
+    print("Stored procedure executed") # Add log statement
+
+    return {"message": "Cultura iniciada com sucesso"}
+
+ except Exception as e:
+    print(f"Exception occurred: {e}") # Add log statement
+    raise HTTPException(status_code=500, detail=str(e))
+ finally:
+    await BANCO_DE_DADOS.disconnect()
+
 
 
 @app.post("/cultura_especifica/previsao/")
@@ -574,6 +598,9 @@ async def scrape_fao(cultura: str):
         
         # Extrai apenas o texto dos parágrafos encontrados
         textos_cultura = [p.get_text() for p in description_cultura[:6]]
+        # Translates the text to Portuguese
+        translator = Translator()
+        translated_textos_cultura = [translator.translate(text, src='en', dest='pt').text for text in textos_cultura]
 
        # extrair imagem url
         image_cultura = soup.find_all('p', class_='bodytext')
@@ -586,7 +613,7 @@ async def scrape_fao(cultura: str):
 
         
     
-        return {"description_cultura": textos_cultura, "img_url": img_url}
+        return {"description_cultura": translated_textos_cultura, "img_url": img_url}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

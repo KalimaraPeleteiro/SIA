@@ -60,16 +60,16 @@
 @media (max-width: 1900px) {
 
     .box {
-        width: 25rem;
-        height: 8rem;
+        width: 24rem;
+        height: 6rem;
     }
 
     .items {
-        gap: 3rem;
+        gap: 2rem;
     }
 
     .numberInfo {
-        font-size: 4rem;
+        font-size: 3rem;
         text-align: center;
     }
 

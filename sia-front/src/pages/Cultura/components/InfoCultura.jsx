@@ -1,10 +1,35 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styles from './InfoCultura.module.css';
-
+import axios from 'axios';
 
 const InfoCultura = ({nameCultura, buttonText, infoType, culturaIniciada, data, ativo, existeAnalise}) => {
   let textInfos;
+  const { cultureName } = useParams();
+
+  const iniciarCultura = async () => {
+    const data = {
+      "nomeCultura": cultureName
+    }
+
+    console.log(data);
+    
+    try {
+      console.log("Sending request"); // Add log statement
+      const response = await axios.put('http://127.0.0.1:8000/cultura_especifica/iniciar/', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 200) {
+        console.log('Cultura iniciada com sucesso');
+      } else {
+        console.error('Erro ao iniciar a cultura');
+      }
+    } catch (error) {
+      console.error('Erro ao iniciar a cultura:', error);
+    }
+   };
 
   switch(infoType) {
     case 'plantioIniciado':
@@ -47,7 +72,9 @@ const InfoCultura = ({nameCultura, buttonText, infoType, culturaIniciada, data, 
         <p className={styles.pStyles}>{textInfos}</p>
 
         <div className={styles.containerButtonInfo}>
-          <button className={`${styles.buttonInfo} ${culturaIniciada || ativo || existeAnalise ? styles.buttonInativo : ''}`}>
+          <button className={`${styles.buttonInfo} ${culturaIniciada || ativo || existeAnalise ? styles.buttonInativo : ''}`}
+            onClick={buttonText === "Iniciar Cultura" ? iniciarCultura : () => {}}
+          >
             {buttonText}
           </button>
         </div>
