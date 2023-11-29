@@ -64,8 +64,8 @@ Além de uma análise prévia, para o bom uso do sistema, também é recomendado
 Após a compra do produto, o mesmo deve ser ativado com uma chave única (enviada ao e-mail do usuário).
 
 <p align="center">
-  <img src="https://github.com/KalimaraPeleteiro/SIA/assets/94702837/5ddb1949-48a7-41c6-8ab9-b91818b826ea" width="450" />
-  <img src="https://github.com/KalimaraPeleteiro/SIA/assets/94702837/432716eb-26b6-4909-b226-4a68577eefd5" width="450" />
+  <img src="https://github.com/KalimaraPeleteiro/SIA/assets/94702837/5ddb1949-48a7-41c6-8ab9-b91818b826ea" width="500" />
+  <img src="https://github.com/KalimaraPeleteiro/SIA/assets/94702837/432716eb-26b6-4909-b226-4a68577eefd5" width="500" />
 </p>
 
 <br>
